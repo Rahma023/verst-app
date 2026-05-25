@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import { Icon } from "@/components/icon";
 import { ModuleCardCompact, ModuleCardFeatured } from "@/components/module-card";
 import { TopNav } from "@/components/top-nav";
-import { COURSES } from "@/data/courses";
+import { getCourses } from "@/lib/data/courses";
 import { PODCASTS, THREADS } from "@/data/community";
 
 const PROGRAM_STATS: readonly [string, string, string][] = [
@@ -20,9 +20,12 @@ const TUTOR_CHIPS = ["Cites sources", "Slide-aware", "Quizzes you", "Generates f
 const TUTOR_SUGGESTIONS = ["Quiz me on this", "Flashcards", "Summarise this lesson"] as const;
 const DONATE_PRESETS = ["$10", "$25", "$50", "$100"] as const;
 
-export default function HomePage() {
-  const featuredModule = COURSES.find((c) => c.code === "I") ?? COURSES[0];
-  const otherModules = COURSES.filter((c) => c.id !== featuredModule.id && c.section === "B").slice(0, 4);
+export default async function HomePage() {
+  const courses = await getCourses();
+  const featuredModule = courses.find((c) => c.code === "I") ?? courses[0];
+  const otherModules = courses
+    .filter((c) => c.id !== featuredModule.id && c.section === "B")
+    .slice(0, 4);
   const topPodcast = PODCASTS[0];
 
   return (
