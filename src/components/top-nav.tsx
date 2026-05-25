@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Icon } from "./icon";
+import { createClient } from "@/lib/supabase/server";
+import { AuthControls } from "./auth-controls";
 
 const ITEMS = [
   { id: "program", label: "Program", href: "/program" },
@@ -12,7 +13,12 @@ const ITEMS = [
 
 type Active = (typeof ITEMS)[number]["id"] | "home";
 
-export function TopNav({ active = "home" }: { active?: Active }) {
+export async function TopNav({ active = "home" }: { active?: Active }) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <nav className="topnav">
       <Link href="/" className="brand">
@@ -27,12 +33,7 @@ export function TopNav({ active = "home" }: { active?: Active }) {
         ))}
       </div>
       <div className="right">
-        <button type="button" className="btn btn-ghost btn-sm">
-          Sign in
-        </button>
-        <button type="button" className="btn btn-pri btn-sm">
-          Get started <Icon name="arrow-r" size={14} />
-        </button>
+        <AuthControls user={user} />
       </div>
     </nav>
   );
