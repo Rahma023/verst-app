@@ -10,50 +10,52 @@
 insert into public.modules
   (id, code, section, title, subtitle, category, duration, level, certifies, price_text, visual, glass_icon, lesson_count, order_index, status, instructor_name, instructor_role, published)
 values
-  ('a1', 'A.1', 'A', 'Foundations of AI for Climate',
-   'A practitioner''s primer to the AI stack used in climate work.',
-   'AI Foundations', '~4 weeks · 28 h', 'Beginner', true, 'Free', 'grid', 'sparkle',
-   5, 1, 'in-production', 'Asha Kimani', 'GIS / MRV · Kenya', true),
-
-  ('a2', 'A.2', 'A', 'AI for Carbon Monitoring & MRV',
-   'Remote sensing, satellite imagery, and ML-driven measurement.',
-   'MRV', '~5 weeks · 35 h', 'Intermediate', true, '$49', 'map', 'globe',
-   6, 2, 'in-production', 'Asha Kimani', 'GIS / MRV · Kenya', true),
-
-  ('a3', 'A.3', 'A', 'AI for Climate Modelling & Adaptation',
-   'From digital twins to early-warning systems.',
-   'Adaptation', '~4 weeks · 28 h', 'Advanced', true, '$49', 'wave', 'chart',
-   5, 3, 'planned', 'Dr. Lerato Sithole', 'Climate Scientist · S. Africa', true),
-
-  ('a4', 'A.4', 'A', 'Generative AI for Sustainability Teams',
-   'Practical LLM workflows for ESG, reporting and project ops.',
-   'AI Applications', '~3 weeks · 21 h', 'Beginner', true, 'Free', 'stack', 'wand',
-   4, 4, 'planned', 'Tunde Aiyetan', 'Sustainability Director', true),
-
-  ('m1', 'I', 'B', 'Introduction to Carbon Markets',
+  -- Section A — Carbon Markets (the main curriculum)
+  ('m1', 'I', 'A', 'Introduction to Carbon Markets',
    'The foundation. How the world prices climate.',
    'Foundations', '~6 weeks · 42 h', 'Beginner', true, 'Free', 'orbit', 'globe',
-   6, 5, 'live', 'Dr. Amaka Eze', 'UNFCCC Observer', true),
+   6, 1, 'live', 'Dr. Amaka Eze', 'UNFCCC Observer', true),
 
-  ('m2', 'II', 'B', 'Organizational Level GHG Accounting',
+  ('m2', 'II', 'A', 'Organizational Level GHG Accounting',
    'ISO 14064-1 — the full scope of emissions you own.',
    'Corporate Reporting', '~5 weeks · 35 h', 'Intermediate', true, 'Free', 'stack', 'users',
-   5, 6, 'live', 'Tunde Aiyetan', 'Sustainability Director', true),
+   5, 2, 'live', 'Tunde Aiyetan', 'Sustainability Director', true),
 
-  ('m3', 'III', 'B', 'Project Level GHG Accounting',
+  ('m3', 'III', 'A', 'Project Level GHG Accounting',
    'ISO 14064-2 — building a real, verifiable carbon project.',
    'Project Development', '~6 weeks · 42 h', 'Intermediate', true, '$49', 'leaf', 'leaf',
-   6, 7, 'in-production', 'Kwame Mensah', 'Project Developer · Ghana', true),
+   6, 3, 'in-production', 'Kwame Mensah', 'Project Developer · Ghana', true),
 
-  ('m4', 'IV', 'B', 'Carbon Finance',
+  ('m4', 'IV', 'A', 'Carbon Finance',
    'From the climate-finance stack to a signed offtake.',
    'Finance', '~5 weeks · 35 h', 'Advanced', true, '$49', 'map', 'chart',
-   5, 8, 'recording', 'Naledi Mokoena', 'Climate Finance Lead', true),
+   5, 4, 'recording', 'Naledi Mokoena', 'Climate Finance Lead', true),
 
-  ('m5', 'V', 'B', 'Article 6 of the Paris Agreement',
+  ('m5', 'V', 'A', 'Article 6 of the Paris Agreement',
    'The global rulebook — from Kyoto to corresponding adjustments.',
    'Policy', '~6 weeks · 42 h', 'Advanced', true, '$49', 'wave', 'flag',
-   6, 9, 'live', 'Dr. Lerato Sithole', 'Climate Policy · S. Africa', true)
+   6, 5, 'live', 'Dr. Lerato Sithole', 'Climate Policy · S. Africa', true),
+
+  -- Section B — AI in Climate
+  ('a1', 'A.1', 'B', 'Foundations of AI for Climate',
+   'A practitioner''s primer to the AI stack used in climate work.',
+   'AI Foundations', '~4 weeks · 28 h', 'Beginner', true, 'Free', 'grid', 'sparkle',
+   5, 6, 'in-production', 'Asha Kimani', 'GIS / MRV · Kenya', true),
+
+  ('a2', 'A.2', 'B', 'AI for Carbon Monitoring & MRV',
+   'Remote sensing, satellite imagery, and ML-driven measurement.',
+   'MRV', '~5 weeks · 35 h', 'Intermediate', true, '$49', 'map', 'globe',
+   6, 7, 'in-production', 'Asha Kimani', 'GIS / MRV · Kenya', true),
+
+  ('a3', 'A.3', 'B', 'AI for Climate Modelling & Adaptation',
+   'From digital twins to early-warning systems.',
+   'Adaptation', '~4 weeks · 28 h', 'Advanced', true, '$49', 'wave', 'chart',
+   5, 8, 'planned', 'Dr. Lerato Sithole', 'Climate Scientist · S. Africa', true),
+
+  ('a4', 'A.4', 'B', 'Generative AI for Sustainability Teams',
+   'Practical LLM workflows for ESG, reporting and project ops.',
+   'AI Applications', '~3 weeks · 21 h', 'Beginner', true, 'Free', 'stack', 'wand',
+   4, 9, 'planned', 'Tunde Aiyetan', 'Sustainability Director', true)
 on conflict (id) do update set
   code             = excluded.code,
   section          = excluded.section,

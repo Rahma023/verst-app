@@ -119,6 +119,116 @@ export function ModuleCardFeatured({ c }: { c: Course }) {
   );
 }
 
+export function ModuleRow({ c }: { c: Course }) {
+  const syllabus = c.syllabus ?? [];
+  return (
+    <Link href={`/program/${c.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+      <article
+        className="hover-lift"
+        style={{
+          background: "var(--card)",
+          border: "1px solid var(--line)",
+          borderRadius: 12,
+          overflow: "hidden",
+          display: "grid",
+          gridTemplateColumns: "200px 1fr 220px",
+        }}
+      >
+        <div style={{ position: "relative" }}>
+          <GlassThumb
+            icon={c.glassIcon}
+            code={c.code}
+            style={{ height: "100%", borderRadius: 0, minHeight: 200 }}
+          />
+        </div>
+        <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <span
+              className="mono"
+              style={{
+                fontSize: 10,
+                color: "var(--ink-3)",
+                letterSpacing: ".14em",
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+            >
+              {c.cat}
+            </span>
+            <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-4)" }} />
+            <span className="mono" style={{ fontSize: 10, color: "var(--ink-3)", letterSpacing: ".06em", fontWeight: 600 }}>
+              {c.lvl.toUpperCase()}
+            </span>
+            <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--ink-4)" }} />
+            <span className="mono" style={{ fontSize: 10, color: "var(--ink-3)", letterSpacing: ".06em", fontWeight: 600 }}>
+              {c.dur.toUpperCase()}
+            </span>
+            {c.cert && <span className="tag tag-cert" style={{ marginLeft: "auto" }}>Certified</span>}
+          </div>
+          <h3 style={{ fontWeight: 700, fontSize: 24, lineHeight: 1.1, letterSpacing: "-.005em" }}>{c.title}</h3>
+          <p style={{ fontSize: 14, color: "var(--ink-2)", lineHeight: 1.5 }}>{c.sub}</p>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 6 }}>
+            <Avatar name={c.inst} size={28} />
+            <span style={{ fontSize: 12.5, fontWeight: 600 }}>{c.inst}</span>
+            <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)" }}>{c.instRole}</span>
+          </div>
+          {syllabus.length > 0 && (
+            <div style={{ marginTop: 12, paddingTop: 14, borderTop: "1px dashed var(--line)" }}>
+              <div className="mono" style={{ fontSize: 10, letterSpacing: ".14em", color: "var(--ink-3)", marginBottom: 8, fontWeight: 600 }}>
+                SYLLABUS
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {syllabus.slice(0, 4).map((l) => (
+                  <span key={l.id} className="chip" style={{ height: 24, fontSize: 11 }}>
+                    {l.t.length > 34 ? l.t.slice(0, 34) + "…" : l.t}
+                  </span>
+                ))}
+                {syllabus.length > 4 && (
+                  <span className="chip" style={{ height: 24, fontSize: 11 }}>
+                    + {syllabus.length - 4} more
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+        <div
+          style={{
+            padding: "24px",
+            background: "var(--paper-2)",
+            borderLeft: "1px solid var(--line)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: 18,
+          }}
+        >
+          <div>
+            <div className="mono" style={{ fontSize: 10, letterSpacing: ".14em", color: "var(--ink-3)", fontWeight: 700, marginBottom: 8 }}>
+              ENROLMENT
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 28, letterSpacing: "-.01em" }}>{c.price}</div>
+            <div style={{ fontSize: 12, color: "var(--ink-3)", marginTop: 4 }}>
+              {c.price === "Free" ? "No card required" : "Or included in the full program"}
+            </div>
+          </div>
+          <div>
+            <div className="bar bar-thick" style={{ marginBottom: 6 }}>
+              <i style={{ width: c.progress > 0 ? `${c.progress}%` : "0%" }} />
+            </div>
+            <div className="mono" style={{ fontSize: 10, letterSpacing: ".06em", color: "var(--ink-3)", fontWeight: 600 }}>
+              {c.progress > 0 ? `${c.progress}% COMPLETE · IN PROGRESS` : "NOT STARTED"}
+            </div>
+          </div>
+          <span className="btn btn-pri" style={{ justifyContent: "center" }}>
+            {c.progress > 0 ? "Resume" : "Enroll"} <Icon name="arrow-r" size={12} />
+          </span>
+        </div>
+      </article>
+    </Link>
+  );
+}
+
 export function ModuleCardCompact({ c }: { c: Course }) {
   return (
     <Link href={`/program/${c.id}`} style={{ textDecoration: "none", color: "inherit" }}>

@@ -24,7 +24,7 @@ export default async function HomePage() {
   const courses = await getCourses();
   const featuredModule = courses.find((c) => c.code === "I") ?? courses[0];
   const otherModules = courses
-    .filter((c) => c.id !== featuredModule.id && c.section === "B")
+    .filter((c) => c.id !== featuredModule.id && c.section === "A")
     .slice(0, 4);
   const topPodcast = PODCASTS[0];
 
@@ -143,7 +143,7 @@ export default async function HomePage() {
               Two sections, sequenced the way <em>practitioners</em> actually learn.
             </h2>
             <p style={{ fontSize: 15, color: "var(--ink-2)", marginTop: 14, maxWidth: 560, lineHeight: 1.5 }}>
-              <strong>Section A · AI in Climate</strong> and <strong>Section B · Carbon Markets</strong> — take any
+              <strong>Section A · Carbon Markets</strong> and <strong>Section B · AI in Climate</strong> — take any
               module independently or work through the full curriculum.
             </p>
           </div>
