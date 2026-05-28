@@ -1,6 +1,7 @@
 "use client";
 
 import type { User } from "@supabase/supabase-js";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "@/components/avatar";
@@ -49,10 +50,19 @@ export function AuthControls({ user }: { user: User | null }) {
 
   return (
     <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-      <Avatar name={fullName} size={32} />
-      <span style={{ fontSize: 12.5, fontWeight: 600, color: "var(--ink)" }}>
-        {firstName}
-      </span>
+      <Link
+        href="/dashboard"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          textDecoration: "none",
+          color: "var(--ink)",
+        }}
+      >
+        <Avatar name={fullName} size={32} />
+        <span style={{ fontSize: 12.5, fontWeight: 600 }}>{firstName}</span>
+      </Link>
       <button
         type="button"
         onClick={handleSignOut}
