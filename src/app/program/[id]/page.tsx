@@ -40,6 +40,17 @@ export default async function ModuleDetailPage(props: {
   } = await supabase.auth.getUser();
   const signedIn = !!user;
 
+  let enrolled = false;
+  if (user) {
+    const { data: enrolment } = await supabase
+      .from("enrolments")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("module_id", course.id)
+      .maybeSingle();
+    enrolled = !!enrolment;
+  }
+
   const durationTail = course.dur.split("·")[1]?.trim() ?? course.dur;
 
   return (
@@ -168,7 +179,12 @@ export default async function ModuleDetailPage(props: {
           </div>
 
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <EnrollButton courseId={course.id} signedIn={signedIn} progress={course.progress} />
+            <EnrollButton
+              courseId={course.id}
+              signedIn={signedIn}
+              enrolled={enrolled}
+              progress={course.progress}
+            />
             <span
               className="mono"
               style={{ marginLeft: 8, fontSize: 14, fontWeight: 700 }}

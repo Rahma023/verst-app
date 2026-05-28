@@ -28,9 +28,11 @@ export function ModalShell({ title, subtitle, children, width = 480 }: Props) {
         background: "rgba(14, 22, 18, 0.55)",
         backdropFilter: "blur(4px)",
         WebkitBackdropFilter: "blur(4px)",
-        display: "grid",
-        placeItems: "center",
-        padding: 20,
+        overflowY: "auto",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        padding: "5vh 20px 20px",
       }}
     >
       <div
