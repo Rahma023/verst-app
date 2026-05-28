@@ -51,6 +51,9 @@ export default async function ModuleDetailPage(props: {
     enrolled = !!enrolment;
   }
 
+  const firstLesson = syllabus[0];
+  const resumeHref = firstLesson ? `/lesson/${firstLesson.id}` : undefined;
+
   const durationTail = course.dur.split("·")[1]?.trim() ?? course.dur;
 
   return (
@@ -184,6 +187,7 @@ export default async function ModuleDetailPage(props: {
               signedIn={signedIn}
               enrolled={enrolled}
               progress={course.progress}
+              resumeHref={resumeHref}
             />
             <span
               className="mono"
