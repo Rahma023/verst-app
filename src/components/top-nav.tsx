@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { getUserAndRole, portalPathForRole } from "@/lib/auth/role-helpers";
 import { AuthControls } from "./auth-controls";
 
 const ITEMS = [
@@ -14,10 +14,8 @@ const ITEMS = [
 type Active = (typeof ITEMS)[number]["id"] | "home";
 
 export async function TopNav({ active = "home" }: { active?: Active }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { userId, email, role } = await getUserAndRole();
+  const portalHref = portalPathForRole(role);
 
   return (
     <nav className="topnav">
@@ -33,7 +31,12 @@ export async function TopNav({ active = "home" }: { active?: Active }) {
         ))}
       </div>
       <div className="right">
-        <AuthControls user={user} />
+        <AuthControls
+          userId={userId}
+          email={email}
+          role={role}
+          portalHref={portalHref}
+        />
       </div>
     </nav>
   );

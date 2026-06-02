@@ -17,6 +17,15 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/");
 
+  // Tutors/admins don't enrol — send them to their portal instead of the learner dashboard.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("user_id", user.id)
+    .maybeSingle<{ role: string }>();
+  if (profile?.role === "admin") redirect("/admin");
+  if (profile?.role === "tutor") redirect("/tutor");
+
   const data = await getDashboardData();
   if (!data) redirect("/");
 
@@ -24,12 +33,6 @@ export default async function DashboardPage() {
   const fullName =
     (user.user_metadata?.full_name as string | undefined) ?? user.email ?? "learner";
   const firstName = fullName.split(" ")[0];
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("user_id", user.id)
-    .maybeSingle<{ role: string }>();
 
   const { data: questionRows } = await supabase
     .from("learner_questions")
@@ -39,6 +42,19 @@ export default async function DashboardPage() {
     .eq("learner_user_id", user.id)
     .order("asked_at", { ascending: false })
     .limit(5);
+
+  const { data: certRows } = await supabase
+    .from("certificates")
+    .select("id, verify_code, issued_at, modules ( code, title )")
+    .eq("user_id", user.id)
+    .order("issued_at", { ascending: false });
+  type Cert = {
+    id: string;
+    verify_code: string;
+    issued_at: string;
+    modules: { code: string; title: string } | null;
+  };
+  const myCerts = (certRows ?? []) as unknown as Cert[];
   type LQ = {
     id: string;
     question_text: string;
@@ -373,6 +389,98 @@ export default async function DashboardPage() {
             </div>
           )}
         </section>
+
+        {myCerts.length > 0 && (
+          <section style={{ marginBottom: 48 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                marginBottom: 18,
+              }}
+            >
+              <h2
+                className="display"
+                style={{ fontSize: "clamp(22px, 3vw, 30px)", letterSpacing: "-.015em" }}
+              >
+                Your <em>certificates</em>.
+              </h2>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                gap: 14,
+              }}
+            >
+              {myCerts.map((c) => (
+                <article
+                  key={c.id}
+                  style={{
+                    padding: 22,
+                    background: "var(--forest-2)",
+                    color: "#fff",
+                    borderRadius: 12,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div style={{ position: "absolute", top: -20, right: -20, opacity: 0.18 }}>
+                    <Icon name="trophy" size={120} stroke={1} style={{ color: "var(--moss)" }} />
+                  </div>
+                  <div
+                    className="mono"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: ".18em",
+                      color: "var(--moss)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    CERTIFICATE · MODULE {c.modules?.code ?? "?"}
+                  </div>
+                  <div style={{ fontSize: 18, fontWeight: 700, lineHeight: 1.25 }}>
+                    {c.modules?.title ?? "Verst Carbon Academy"}
+                  </div>
+                  <div
+                    className="mono"
+                    style={{ fontSize: 11, color: "#9aa19a", letterSpacing: ".06em" }}
+                  >
+                    Issued {new Date(c.issued_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                  </div>
+                  <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
+                    <a
+                      href={`/api/certificate/${c.id}/pdf`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-accent btn-sm"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Icon name="download" size={12} /> Download PDF
+                    </a>
+                    <a
+                      href={`/verify/${c.verify_code}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-ghost btn-sm"
+                      style={{
+                        textDecoration: "none",
+                        borderColor: "#3a5547",
+                        color: "#D9DCD3",
+                      }}
+                    >
+                      Verify link
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
         {myQuestions.length > 0 && (
           <section style={{ marginBottom: 48 }}>

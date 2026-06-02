@@ -198,6 +198,8 @@ export function SignupModal() {
 
     setBusy(false);
     close();
+    const dest = role === "admin" ? "/admin" : role === "tutor" ? "/tutor" : "/dashboard";
+    router.push(dest);
     router.refresh();
   }
 

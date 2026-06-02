@@ -86,7 +86,7 @@ export default async function QuizPage(props: {
               marginBottom: 8,
             }}
           >
-            MODULE QUIZ · {questions.length} QUESTIONS · 60% TO PASS
+            MODULE QUIZ · {questions.length} QUESTIONS · 80% TO PASS
           </div>
           <h1
             className="display"

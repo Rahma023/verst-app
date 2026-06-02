@@ -28,6 +28,14 @@ export default async function ProgramPage(props: {
   const categories = ["All", ...Array.from(new Set(courses.map((c) => c.cat)))];
   const filtered = courses.filter((c) => cat === "All" || c.cat === cat);
 
+  const sectionACount = courses.filter((c) => c.section === "A").length;
+  const sectionBCount = courses.filter((c) => c.section === "B").length;
+  const totalLessons = courses.reduce((s, c) => s + c.lessons, 0);
+  const totalHours = courses.reduce((s, c) => {
+    const m = c.dur.match(/(\d+)\s*h/);
+    return s + (m ? parseInt(m[1], 10) : 0);
+  }, 0);
+
   return (
     <>
       <TopNav active="program" />
@@ -35,33 +43,220 @@ export default async function ProgramPage(props: {
       {/* page header */}
       <section style={{ borderBottom: "1px solid var(--line)" }}>
         <div className="container" style={{ padding: "56px 32px 36px" }}>
-          <div style={{ marginBottom: 32, maxWidth: 880 }}>
-            <div className="eyebrow" style={{ marginBottom: 14 }}>
-              · The Verst Academy program · self-paced
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1.5fr 1fr",
+              gap: 64,
+              alignItems: "start",
+              marginBottom: 36,
+            }}
+          >
+            {/* left column: existing hero copy */}
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 14 }}>
+                · The Verst Academy program · self-paced
+              </div>
+              <h1
+                className="display"
+                style={{ fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: "-.03em" }}
+              >
+                Two sections.
+                <br />
+                One <em>program</em>.
+              </h1>
+              <p
+                style={{
+                  fontSize: 16,
+                  color: "var(--ink-2)",
+                  maxWidth: 540,
+                  marginTop: 18,
+                  lineHeight: 1.55,
+                }}
+              >
+                <strong>Section A · Carbon Markets</strong> covers the science, accounting, finance
+                and policy of carbon.{" "}
+                <strong>Section B · AI in Climate</strong> covers how artificial intelligence is
+                reshaping measurement, modelling and operations. Take any module independently, or
+                work through the full program.
+              </p>
             </div>
-            <h1
-              className="display"
-              style={{ fontSize: "clamp(40px, 6vw, 72px)", maxWidth: 780, letterSpacing: "-.03em" }}
-            >
-              Two sections.
-              <br />
-              One <em>program</em>.
-            </h1>
-            <p
+
+            {/* right column: program-at-a-glance panel */}
+            <aside
               style={{
-                fontSize: 16,
-                color: "var(--ink-2)",
-                maxWidth: 620,
-                marginTop: 18,
-                lineHeight: 1.55,
+                border: "1px solid var(--ink)",
+                background: "var(--card)",
+                padding: 24,
+                display: "flex",
+                flexDirection: "column",
+                gap: 18,
               }}
             >
-              <strong>Section A · Carbon Markets</strong> covers the science, accounting, finance
-              and policy of carbon.{" "}
-              <strong>Section B · AI in Climate</strong> covers how artificial intelligence is
-              reshaping measurement, modelling and operations. Take any module independently, or
-              work through the full program.
-            </p>
+              <header
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: 12,
+                  borderBottom: "1px solid var(--ink)",
+                }}
+              >
+                <span className="label" style={{ color: "var(--ink)" }}>
+                  PROGRAM AT A GLANCE
+                </span>
+                <span className="mono" style={{ fontSize: 10, color: "var(--ink-3)" }}>
+                  MAY 2026
+                </span>
+              </header>
+
+              {/* sections breakdown */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                <div
+                  style={{
+                    padding: "16px 14px",
+                    background: "var(--forest-2)",
+                    borderRadius: 8,
+                    color: "#fff",
+                    textAlign: "center",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      opacity: 0.07,
+                      backgroundImage:
+                        "radial-gradient(rgba(255,255,255,1) 1px, transparent 1px)",
+                      backgroundSize: "12px 12px",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "relative",
+                      fontSize: 36,
+                      fontWeight: 800,
+                      lineHeight: 1,
+                      color: "var(--moss)",
+                      letterSpacing: "-.02em",
+                    }}
+                  >
+                    {sectionACount}
+                  </div>
+                  <div
+                    className="mono"
+                    style={{
+                      position: "relative",
+                      fontSize: 9,
+                      marginTop: 8,
+                      letterSpacing: ".18em",
+                      fontWeight: 700,
+                      color: "var(--moss)",
+                    }}
+                  >
+                    SECTION A
+                  </div>
+                  <div
+                    style={{
+                      position: "relative",
+                      fontSize: 11,
+                      marginTop: 2,
+                      color: "#D9DCD3",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Carbon Markets
+                  </div>
+                </div>
+                <div
+                  style={{
+                    padding: "16px 14px",
+                    background: "var(--paper-2)",
+                    border: "1px solid var(--line)",
+                    borderRadius: 8,
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 36,
+                      fontWeight: 800,
+                      lineHeight: 1,
+                      color: "var(--forest)",
+                      letterSpacing: "-.02em",
+                    }}
+                  >
+                    {sectionBCount}
+                  </div>
+                  <div
+                    className="mono"
+                    style={{
+                      fontSize: 9,
+                      marginTop: 8,
+                      letterSpacing: ".18em",
+                      fontWeight: 700,
+                      color: "var(--ink-2)",
+                    }}
+                  >
+                    SECTION B
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      marginTop: 2,
+                      color: "var(--ink-3)",
+                      fontWeight: 500,
+                    }}
+                  >
+                    AI in Climate
+                  </div>
+                </div>
+              </div>
+
+              {/* stats list */}
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {(
+                  [
+                    ["Modules", String(courses.length)],
+                    ["Lessons recorded", String(totalLessons)],
+                    ["Hours of content", `${totalHours} h`],
+                    ["Levels", "Beginner → Advanced"],
+                    ["Pass mark", "80%"],
+                    ["Certificates", "Per-module"],
+                  ] as const
+                ).map(([k, v], i, a) => (
+                  <div
+                    key={k}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr auto",
+                      padding: "9px 0",
+                      borderBottom: i < a.length - 1 ? "1px dashed var(--line)" : "none",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <span style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{k}</span>
+                    <span
+                      className="mono"
+                      style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)" }}
+                    >
+                      {v}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* handwritten tape note for warmth */}
+              <div
+                className="tape-note"
+                style={{ marginTop: 4, fontSize: 12.5, lineHeight: 1.5 }}
+              >
+                Built for African project developers, corporate sustainability teams,
+                and the next generation of climate professionals.
+              </div>
+            </aside>
           </div>
 
           {/* category filter */}

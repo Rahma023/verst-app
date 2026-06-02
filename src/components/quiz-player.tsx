@@ -223,7 +223,7 @@ export function QuizPlayer({ module: mod, questions }: Props) {
           Ready to <em>submit</em>?
         </h2>
         <p style={{ fontSize: 14, color: "var(--ink-2)", marginBottom: 24, lineHeight: 1.55 }}>
-          You answered {answeredCount} of {total} questions. You need {60}% (3 of 5) to pass.
+          You answered {answeredCount} of {total} questions. You need {80}% ({Math.ceil(total * 0.8)} of {total}) to pass.
           Once you submit, we'll grade and show you what you got right.
         </p>
 

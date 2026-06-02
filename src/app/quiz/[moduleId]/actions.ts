@@ -32,7 +32,7 @@ type QuestionRow = {
   order_index: number;
 };
 
-const PASS_THRESHOLD = 60;
+const PASS_THRESHOLD = 80;
 
 function randomVerifyCode(): string {
   // Six-character base36-ish code, easy to read aloud.

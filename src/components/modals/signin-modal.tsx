@@ -21,12 +21,28 @@ export function SigninModal() {
     setError(null);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setBusy(false);
     if (error) {
       setError(error.message);
+      setBusy(false);
       return;
     }
+    // Look up role to route to the correct portal.
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    let dest = "/dashboard";
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("user_id", user.id)
+        .maybeSingle<{ role: string }>();
+      if (profile?.role === "admin") dest = "/admin";
+      else if (profile?.role === "tutor") dest = "/tutor";
+    }
+    setBusy(false);
     close();
+    router.push(dest);
     router.refresh();
   }
 

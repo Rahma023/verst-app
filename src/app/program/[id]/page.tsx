@@ -41,15 +41,34 @@ export default async function ModuleDetailPage(props: {
   } = await supabase.auth.getUser();
   const signedIn = !!user;
 
+  let role: "learner" | "tutor" | "admin" = "learner";
   let enrolled = false;
+  let teachesThisModule = false;
   if (user) {
-    const { data: enrolment } = await supabase
-      .from("enrolments")
-      .select("id")
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
       .eq("user_id", user.id)
-      .eq("module_id", course.id)
-      .maybeSingle();
-    enrolled = !!enrolment;
+      .maybeSingle<{ role: "learner" | "tutor" | "admin" }>();
+    role = profile?.role ?? "learner";
+
+    if (role === "learner") {
+      const { data: enrolment } = await supabase
+        .from("enrolments")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("module_id", course.id)
+        .maybeSingle();
+      enrolled = !!enrolment;
+    } else if (role === "tutor") {
+      const { data: assignment } = await supabase
+        .from("tutor_assignments")
+        .select("module_id")
+        .eq("tutor_user_id", user.id)
+        .eq("module_id", course.id)
+        .maybeSingle();
+      teachesThisModule = !!assignment;
+    }
   }
 
   const firstLesson = syllabus[0];
@@ -183,26 +202,55 @@ export default async function ModuleDetailPage(props: {
           </div>
 
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <EnrollButton
-              courseId={course.id}
-              signedIn={signedIn}
-              enrolled={enrolled}
-              progress={course.progress}
-              resumeHref={resumeHref}
-            />
-            {enrolled && (
-              <AskTutorButton
-                moduleId={course.id}
-                moduleTitle={course.title}
-                variant="ghost"
-              />
+            {role === "learner" || !signedIn ? (
+              <>
+                <EnrollButton
+                  courseId={course.id}
+                  signedIn={signedIn}
+                  enrolled={enrolled}
+                  progress={course.progress}
+                  resumeHref={resumeHref}
+                />
+                {enrolled && (
+                  <AskTutorButton
+                    moduleId={course.id}
+                    moduleTitle={course.title}
+                    variant="ghost"
+                  />
+                )}
+                <span
+                  className="mono"
+                  style={{ marginLeft: 8, fontSize: 14, fontWeight: 700 }}
+                >
+                  {course.price}
+                </span>
+              </>
+            ) : role === "tutor" ? (
+              teachesThisModule ? (
+                <Link
+                  href="/tutor"
+                  className="btn btn-pri btn-lg"
+                  style={{ textDecoration: "none" }}
+                >
+                  Manage in Tutor Portal →
+                </Link>
+              ) : (
+                <span
+                  className="mono"
+                  style={{ fontSize: 12, color: "var(--ink-3)", letterSpacing: ".06em" }}
+                >
+                  You don&apos;t teach this module.
+                </span>
+              )
+            ) : (
+              <Link
+                href={`/admin/lessons/${firstLesson?.id ?? ""}`}
+                className="btn btn-pri btn-lg"
+                style={{ textDecoration: "none" }}
+              >
+                Manage in Studio →
+              </Link>
             )}
-            <span
-              className="mono"
-              style={{ marginLeft: 8, fontSize: 14, fontWeight: 700 }}
-            >
-              {course.price}
-            </span>
           </div>
         </div>
 
