@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AskAiChat } from "@/components/ask-ai-chat";
+import { AskTutorButton } from "@/components/ask-tutor-button";
 import { Icon } from "@/components/icon";
 import { createClient } from "@/lib/supabase/client";
 import type { LessonAsset, LessonPlayerData } from "@/lib/data/lessons";
@@ -138,10 +140,19 @@ export function LessonPlayer({ data, initialPercent, initialPosition }: Props) {
         >
           {lesson.title}
         </h1>
-        <div style={{ fontSize: 13, color: "var(--ink-3)" }}>
+        <div style={{ fontSize: 13, color: "var(--ink-3)", marginBottom: 12 }}>
           From <strong style={{ color: "var(--ink-2)" }}>{mod.title}</strong>
           {" · "}
           {lesson.duration}
+        </div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <AskTutorButton
+            moduleId={mod.id}
+            moduleTitle={mod.title}
+            lessonId={lesson.id}
+            lessonTitle={lesson.title}
+            variant="compact"
+          />
         </div>
       </header>
 
@@ -368,6 +379,14 @@ export function LessonPlayer({ data, initialPercent, initialPosition }: Props) {
           </div>
         )}
       </section>
+
+      {/* AI tutor right-rail (full-width on this layout for now) */}
+      <AskAiChat
+        moduleCode={mod.code}
+        moduleTitle={mod.title}
+        lessonCode={lesson.code}
+        lessonTitle={lesson.title}
+      />
 
       {/* transcript */}
       {lesson.transcript_text && (

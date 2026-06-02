@@ -52,7 +52,7 @@ export function Footer() {
         <div>
           <div className="ft-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/verst-academy-logo-dark.svg" alt="Verst Carbon Academy" />
+            <img src="/assets/verst-academy-logo.svg" alt="Verst Carbon Academy" />
           </div>
           <p style={{ color: "#C9CCC4", fontSize: 14, maxWidth: 340, lineHeight: 1.55 }}>
             A learning ecosystem for climate-tech, carbon markets and the next generation of African project developers.

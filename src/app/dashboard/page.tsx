@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { GlassThumb } from "@/components/glass-thumb";
 import { Icon, type IconName } from "@/components/icon";
+import { ModuleThumb } from "@/components/module-thumb";
 import { TopNav } from "@/components/top-nav";
 import { getDashboardData } from "@/lib/data/dashboard";
 import { createClient } from "@/lib/supabase/server";
@@ -24,6 +24,32 @@ export default async function DashboardPage() {
   const fullName =
     (user.user_metadata?.full_name as string | undefined) ?? user.email ?? "learner";
   const firstName = fullName.split(" ")[0];
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("user_id", user.id)
+    .maybeSingle<{ role: string }>();
+
+  const { data: questionRows } = await supabase
+    .from("learner_questions")
+    .select(
+      "id, question_text, status, asked_at, answer_text, answered_at, modules ( code, title ), lessons ( code, title )",
+    )
+    .eq("learner_user_id", user.id)
+    .order("asked_at", { ascending: false })
+    .limit(5);
+  type LQ = {
+    id: string;
+    question_text: string;
+    status: string;
+    asked_at: string;
+    answer_text: string | null;
+    answered_at: string | null;
+    modules: { code: string; title: string } | null;
+    lessons: { code: string; title: string } | null;
+  };
+  const myQuestions = (questionRows ?? []) as unknown as LQ[];
 
   return (
     <>
@@ -65,6 +91,36 @@ export default async function DashboardPage() {
               : "You haven't enrolled in a module yet. Browse the program to get started."}
           </p>
         </header>
+
+        {(profile?.role === "admin" || profile?.role === "tutor") && (
+          <div
+            style={{
+              padding: "14px 18px",
+              border: "1px solid var(--forest)",
+              background: "rgba(0,128,55,.05)",
+              borderRadius: 10,
+              display: "flex",
+              gap: 12,
+              alignItems: "center",
+              marginBottom: 28,
+            }}
+          >
+            <Icon name="sparkle" size={16} style={{ color: "var(--forest)" }} />
+            <div style={{ flex: 1, fontSize: 13.5 }}>
+              You have <strong>{profile.role}</strong> access.{" "}
+              {profile.role === "admin"
+                ? "Open the Studio to manage modules, lessons and uploads."
+                : "Open the Tutor Portal to upload lesson content and answer learner questions."}
+            </div>
+            <Link
+              href={profile.role === "admin" ? "/admin" : "/tutor"}
+              className="btn btn-pri btn-sm"
+              style={{ textDecoration: "none" }}
+            >
+              Open {profile.role === "admin" ? "Studio" : "Tutor Portal"} →
+            </Link>
+          </div>
+        )}
 
         {/* KPI row */}
         <div
@@ -194,7 +250,8 @@ export default async function DashboardPage() {
                   }}
                 >
                   <div style={{ position: "relative", aspectRatio: "16/10" }}>
-                    <GlassThumb
+                    <ModuleThumb
+                      moduleId={e.module.id}
                       icon={e.module.glass_icon as IconName}
                       code={e.module.code}
                       label={e.module.title}
@@ -316,6 +373,82 @@ export default async function DashboardPage() {
             </div>
           )}
         </section>
+
+        {myQuestions.length > 0 && (
+          <section style={{ marginBottom: 48 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                marginBottom: 18,
+              }}
+            >
+              <h2
+                className="display"
+                style={{ fontSize: "clamp(22px, 3vw, 30px)", letterSpacing: "-.015em" }}
+              >
+                Your <em>questions</em>.
+              </h2>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {myQuestions.map((q) => (
+                <article
+                  key={q.id}
+                  style={{
+                    padding: 18,
+                    border: "1px solid var(--line)",
+                    borderRadius: 10,
+                    background: "var(--card)",
+                  }}
+                >
+                  <div
+                    className="mono"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: ".14em",
+                      fontWeight: 700,
+                      color:
+                        q.status === "answered" ? "var(--forest)" : "var(--clay)",
+                      marginBottom: 8,
+                    }}
+                  >
+                    {q.status === "answered" ? "✓ ANSWERED" : "● AWAITING TUTOR"}
+                    {" · MODULE "}
+                    {q.modules?.code ?? "?"}
+                    {q.lessons?.code ? ` · LESSON ${q.lessons.code}` : ""}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      lineHeight: 1.45,
+                      marginBottom: q.answer_text ? 12 : 0,
+                    }}
+                  >
+                    {q.question_text}
+                  </div>
+                  {q.answer_text && (
+                    <div
+                      style={{
+                        padding: "10px 14px",
+                        background: "var(--paper-2)",
+                        borderLeft: "3px solid var(--forest)",
+                        borderRadius: 4,
+                        fontSize: 13.5,
+                        color: "var(--ink-2)",
+                        lineHeight: 1.55,
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {q.answer_text}
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </>
   );

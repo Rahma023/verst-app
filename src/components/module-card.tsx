@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { Course } from "@/data/courses";
 import { Avatar } from "./avatar";
-import { GlassThumb } from "./glass-thumb";
 import { Icon } from "./icon";
+import { ModuleThumb } from "./module-thumb";
 
 function durationTail(dur: string) {
   return dur.split("·")[1]?.trim() ?? dur;
@@ -26,7 +26,13 @@ export function ModuleCardFeatured({ c }: { c: Course }) {
         }}
       >
         <div style={{ position: "relative", height: 280 }}>
-          <GlassThumb icon={c.glassIcon} code={c.code} label={c.title} style={{ height: "100%", borderRadius: 0 }} />
+          <ModuleThumb
+            moduleId={c.id}
+            icon={c.glassIcon}
+            code={c.code}
+            label={c.title}
+            style={{ height: "100%", borderRadius: 0 }}
+          />
           <div
             style={{
               position: "absolute",
@@ -135,7 +141,8 @@ export function ModuleRow({ c }: { c: Course }) {
         }}
       >
         <div style={{ position: "relative" }}>
-          <GlassThumb
+          <ModuleThumb
+            moduleId={c.id}
             icon={c.glassIcon}
             code={c.code}
             style={{ height: "100%", borderRadius: 0, minHeight: 200 }}

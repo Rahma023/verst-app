@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AskTutorButton } from "@/components/ask-tutor-button";
 import { EnrollButton } from "@/components/enroll-button";
 import { Footer } from "@/components/footer";
-import { GlassThumb } from "@/components/glass-thumb";
 import { Icon } from "@/components/icon";
+import { ModuleThumb } from "@/components/module-thumb";
 import { TopNav } from "@/components/top-nav";
 import { getCourseById } from "@/lib/data/courses";
 import { createClient } from "@/lib/supabase/server";
@@ -189,6 +190,13 @@ export default async function ModuleDetailPage(props: {
               progress={course.progress}
               resumeHref={resumeHref}
             />
+            {enrolled && (
+              <AskTutorButton
+                moduleId={course.id}
+                moduleTitle={course.title}
+                variant="ghost"
+              />
+            )}
             <span
               className="mono"
               style={{ marginLeft: 8, fontSize: 14, fontWeight: 700 }}
@@ -199,7 +207,8 @@ export default async function ModuleDetailPage(props: {
         </div>
 
         <div style={{ position: "relative" }}>
-          <GlassThumb
+          <ModuleThumb
+            moduleId={course.id}
             icon={course.glassIcon}
             code={course.code}
             label={course.title}
@@ -229,6 +238,20 @@ export default async function ModuleDetailPage(props: {
             >
               {course.lessons} LESSONS
             </span>
+            {enrolled && (
+              <Link
+                href={`/quiz/${course.id}`}
+                className="btn btn-sm"
+                style={{
+                  marginLeft: "auto",
+                  border: "1px solid var(--forest)",
+                  color: "var(--forest)",
+                  textDecoration: "none",
+                }}
+              >
+                <Icon name="sparkle" size={12} /> Take the module quiz
+              </Link>
+            )}
           </div>
           <p className="margin-note" style={{ maxWidth: 680, marginBottom: 32 }}>
             Lessons are self-paced — take each one when it suits you. Each comes with slides, an

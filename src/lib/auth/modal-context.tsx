@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
-export type ModalKind = "signin" | "signup" | "donate" | "enrol" | null;
+export type ModalKind = "signin" | "signup" | "donate" | "enrol" | "ask-tutor" | null;
 
 type ModalContextValue = {
   modal: ModalKind;
