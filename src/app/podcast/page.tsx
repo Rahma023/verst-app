@@ -112,10 +112,14 @@ export default async function PodcastPage(props: {
             </div>
 
             <div>
+              <div className="eyebrow" style={{ color: "var(--moss)" }}>
+                · Weekly · field-recordings from the carbon economy
+              </div>
               <h1
                 className="display"
                 style={{
                   fontSize: "clamp(32px, 4.5vw, 52px)",
+                  marginTop: 14,
                   marginBottom: 18,
                   color: "var(--paper)",
                   maxWidth: 720,
