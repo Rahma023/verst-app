@@ -91,19 +91,6 @@ export default async function PodcastPage(props: {
             >
               <Icon name="podcast" size={88} style={{ color: "var(--moss)" }} />
               <div
-                style={{
-                  position: "absolute",
-                  top: 18,
-                  left: 18,
-                  fontWeight: 700,
-                  fontSize: 10,
-                  color: "var(--moss)",
-                  letterSpacing: ".18em",
-                }}
-              >
-                VERST PODCAST
-              </div>
-              <div
                 className="mono"
                 style={{
                   position: "absolute",
