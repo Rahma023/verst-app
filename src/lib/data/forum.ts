@@ -1,60 +1,28 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
+import {
+  FORUM_CATEGORIES,
+  type AuthorRole,
+  type ForumAuthor,
+  type ForumCategory,
+  type ForumReply,
+  type ForumThreadDetail,
+  type ForumThreadListItem,
+} from "./forum-shared";
 
-export const FORUM_CATEGORIES = [
-  { id: "carbon", label: "Carbon Markets" },
-  { id: "method", label: "Methodologies" },
-  { id: "mrv", label: "MRV" },
-  { id: "biochar", label: "Biochar" },
-  { id: "blue", label: "Blue Carbon" },
-  { id: "fin", label: "Finance" },
-  { id: "policy", label: "Policy & Regulation" },
-  { id: "africa", label: "Africa Focus" },
-  { id: "general", label: "General" },
-] as const;
-
-export type ForumCategory = (typeof FORUM_CATEGORIES)[number]["id"];
-
-export function categoryLabel(id: string | null | undefined): string {
-  return FORUM_CATEGORIES.find((c) => c.id === id)?.label ?? "General";
-}
-
-export type AuthorRole = "learner" | "tutor" | "admin";
-
-export type ForumAuthor = {
-  user_id: string;
-  full_name: string | null;
-  role: AuthorRole;
-};
-
-export type ForumThreadListItem = {
-  id: string;
-  category: ForumCategory;
-  title: string;
-  body: string;
-  created_at: string;
-  updated_at: string;
-  reply_count: number;
-  view_count: number;
-  status: "open" | "answered" | "closed";
-  author: ForumAuthor;
-};
-
-export type ForumThreadDetail = ForumThreadListItem & {
-  accepted_reply_id: string | null;
-};
-
-export type ForumReply = {
-  id: string;
-  thread_id: string;
-  parent_reply_id: string | null;
-  body: string;
-  created_at: string;
-  updated_at: string;
-  is_accepted: boolean;
-  author: ForumAuthor;
-};
+export {
+  FORUM_CATEGORIES,
+  categoryLabel,
+} from "./forum-shared";
+export type {
+  AuthorRole,
+  ForumAuthor,
+  ForumCategory,
+  ForumReply,
+  ForumThreadDetail,
+  ForumThreadListItem,
+} from "./forum-shared";
 
 type ThreadRow = {
   id: string;
@@ -102,7 +70,6 @@ async function fetchAuthors(
   (data ?? []).forEach((p: ProfileRow) => {
     map.set(p.user_id, { user_id: p.user_id, full_name: p.full_name, role: p.role });
   });
-  // Fallback for any missing profile (shouldn't happen, but safe)
   for (const id of unique) {
     if (!map.has(id)) {
       map.set(id, { user_id: id, full_name: null, role: "learner" });

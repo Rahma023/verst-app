@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { createThread, type ActionResult } from "@/app/forum/actions";
-import { FORUM_CATEGORIES } from "@/lib/data/forum";
+import { FORUM_CATEGORIES } from "@/lib/data/forum-shared";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
