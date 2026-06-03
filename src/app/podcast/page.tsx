@@ -89,7 +89,7 @@ export default async function PodcastPage(props: {
                 border: "1px solid #2a4a37",
               }}
             >
-              <Icon name="podcast" size={88} style={{ color: "var(--moss)" }} />
+              <Icon name="podcast" size={88} style={{ color: "#ffffff" }} />
               <div
                 className="mono"
                 style={{
