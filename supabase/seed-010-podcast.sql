@@ -23,7 +23,7 @@ values
    'Kwame Mensah', 'Project Developer', 'Verra-registered, Ghana',
    E'I''m sceptical of every carbon credit until it has a measurement story, a permanence story, and a price that reflects both.',
    2538, -- 42:18
-   E'[
+   '[
      {"at_seconds": 0,    "label": "Why we''re here"},
      {"at_seconds": 194,  "label": "The 2024 quality discourse, in retrospect"},
      {"at_seconds": 692,  "label": "Microsoft''s purchasing playbook"},
@@ -31,7 +31,7 @@ values
      {"at_seconds": 1730, "label": "Who survives 2027"},
      {"at_seconds": 2200, "label": "Advice for a project developer today"}
    ]'::jsonb,
-   E'[
+   '[
      {"at": "00:00", "speaker": "ASHA",  "text": "Kwame, welcome to the Verst podcast."},
      {"at": "00:08", "speaker": "KWAME", "text": "Thanks. Long-time listener, first-time guest."},
      {"at": "00:14", "speaker": "ASHA",  "text": "Let''s start with the thing you said on LinkedIn that got everyone shouting at each other — that most carbon credits won''t survive 2027. Walk me through it."},
