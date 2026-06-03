@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { recordDonationIntent } from "@/app/donate/actions";
 import { Icon } from "@/components/icon";
 
-const PRESETS = [10, 25, 50, 100, 250];
+const PRESETS = [5, 10, 25, 50, 100];
 
 type PayMethod = "mpesa" | "card" | "paypal";
 
@@ -21,7 +21,7 @@ export function DonateWidget({
   defaultEmail?: string;
   defaultName?: string;
 }) {
-  const [amount, setAmount] = useState<number>(50);
+  const [amount, setAmount] = useState<number>(5);
   const [custom, setCustom] = useState<string>("");
   const [monthly, setMonthly] = useState<boolean>(true);
   const [pay, setPay] = useState<PayMethod>("mpesa");
@@ -148,7 +148,7 @@ export function DonateWidget({
           inputMode="decimal"
           value={custom || amount}
           onChange={(e) => setCustom(e.target.value.replace(/[^0-9.]/g, ""))}
-          placeholder="50"
+          placeholder="5"
           aria-label="Donation amount"
           style={{
             flex: 1,
@@ -256,10 +256,17 @@ export function DonateWidget({
                 style={{ accentColor: "var(--forest)" }}
               />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, fontSize: 13.5 }}>{m.title}</div>
+                <div style={{ fontWeight: 700, fontSize: 14, color: "var(--ink)" }}>
+                  {m.title}
+                </div>
                 <div
                   className="mono"
-                  style={{ fontSize: 10.5, color: "var(--ink-3)", marginTop: 2, fontWeight: 600 }}
+                  style={{
+                    fontSize: 10.5,
+                    color: "var(--ink-3)",
+                    marginTop: 2,
+                    fontWeight: 600,
+                  }}
                 >
                   {m.sub}
                 </div>
