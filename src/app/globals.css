@@ -447,15 +447,180 @@ textarea.input{ height:auto; padding:12px 14px; line-height:1.5; resize:vertical
 .py-64{ padding-top:64px; padding-bottom:64px; }
 .py-96{ padding-top:96px; padding-bottom:96px; }
 
-/* ====== media ====== */
-@media (max-width: 1280px){
-  .container{ padding: 0 24px; }
+/* ============================================================
+   RESPONSIVE — all-screen-size overrides
+   The pages use inline gridTemplateColumns values (e.g. "1.5fr
+   1fr", "repeat(3, 1fr)", "240px 1fr 280px"). Because inline
+   styles trump CSS classes, we override them with [style*=...]
+   attribute selectors + !important at media breakpoints.
+   ============================================================ */
+
+img, video, iframe, svg{ max-width: 100%; height: auto; }
+img{ height: auto; }
+
+/* ---------- tablet (≤ 1024px) ---------- */
+@media (max-width: 1024px){
+  .container, .container-tight{ padding: 0 24px; }
+
+  /* footer collapses last column */
   .footer .ft-grid{ grid-template-columns: 1.4fr 1fr 1fr 1fr; }
   .footer .ft-grid > div:nth-child(5){ display:none; }
+
+  /* big logos shrink */
+  .topnav .brand,
+  .topnav .brand img{ height: 64px; max-width: 200px; }
+
+  /* asymmetric two-column heroes → stack */
+  [style*="grid-template-columns: 1.5fr 1fr"],
+  [style*="grid-template-columns: 1.4fr 1fr"],
+  [style*="grid-template-columns: 1.6fr 1fr"],
+  [style*="grid-template-columns: 1.2fr 1fr"],
+  [style*="grid-template-columns: 1fr 1.2fr"],
+  [style*="grid-template-columns: 1.5fr 320px"],
+  [style*="grid-template-columns: 1.6fr 380px"],
+  [style*="grid-template-columns: 1.6fr 360px"],
+  [style*="grid-template-columns: 1fr 320px"]{
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* three-pane forum / library / podcast layouts → stack */
+  [style*="grid-template-columns: 260px 1fr 280px"],
+  [style*="grid-template-columns: 240px 1fr 280px"],
+  [style*="grid-template-columns: 200px 1fr 220px"],
+  [style*="grid-template-columns: 240px 1fr"]{
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* 3-up grids shrink to 2 */
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="grid-template-columns: repeat(3,1fr)"]{
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
 }
 
+/* ---------- phone (≤ 800px) ---------- */
 @media (max-width: 800px){
-  .topnav{ padding: 12px 20px; gap: 16px; }
-  .topnav .links{ display:none; }
-  .container{ padding: 0 20px; }
+  .container, .container-tight{ padding: 0 16px; }
+
+  /* topnav — keep links but make horizontally scrollable */
+  .topnav{ padding: 10px 16px; gap: 12px; }
+  .topnav .brand,
+  .topnav .brand img{ height: 48px; max-width: 160px; }
+  .topnav .links{
+    display: flex !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex: 1;
+    min-width: 0;
+    gap: 14px;
+    padding: 4px 0;
+  }
+  .topnav .links::-webkit-scrollbar{ display: none; }
+  .topnav .links a{
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 12.5px;
+  }
+  .topnav .right{ padding-left: 8px; }
+
+  /* shrink display headlines on mobile */
+  .display{ font-size: clamp(28px, 9vw, 44px) !important; line-height: 1.05; }
+
+  /* shrink hero paddings */
+  section[style*="padding: 64px"],
+  section[style*="padding: 56px"],
+  section[style*="padding: 72px"],
+  section[style*="padding: 80px"]{
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+
+  /* all 3-up grids → stack on phone */
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="grid-template-columns: repeat(3,1fr)"]{
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* 2-up grids → stack on phone */
+  [style*="grid-template-columns: 1fr 1fr"]{
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* meta strips and feature rows — wrap nicely */
+  [style*="grid-template-columns: 1fr auto auto"],
+  [style*="grid-template-columns: auto 1fr auto"]{
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    align-items: flex-start !important;
+  }
+
+  /* footer collapses to 2 columns */
+  .footer{ padding: 40px 20px 24px; }
+  .footer .ft-grid{
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px;
+  }
+  .footer .ft-grid > div:first-child{ grid-column: 1 / -1; }
+  .footer .ft-bot{
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .footer .ft-brand img{ height: 80px; max-width: 220px; padding: 10px 16px; }
+
+  /* section header → stack on phone */
+  .sec-h{ grid-template-columns: 1fr !important; gap: 8px; padding: 20px 0 12px; }
+
+  /* shrink section-heading big numbers */
+  .sec-h .sec-title{ font-size: 22px; }
+
+  /* generic gap reductions inside containers */
+  [style*="gap: 64px"]{ gap: 24px !important; }
+  [style*="gap: 56px"]{ gap: 24px !important; }
+  [style*="gap: 48px"]{ gap: 24px !important; }
+  [style*="gap: 40px"]{ gap: 20px !important; }
+
+  /* tables can horizontally scroll instead of breaking */
+  [style*="grid-template-columns: 60px 1fr 130px 130px 110px 110px"],
+  [style*="grid-template-columns: 48px 1fr 120px 120px 100px 100px"]{
+    grid-template-columns: 60px 1fr !important;
+    gap: 10px !important;
+  }
+  [style*="grid-template-columns: 60px 1fr 130px 130px 110px 110px"] > *:nth-child(n+3),
+  [style*="grid-template-columns: 48px 1fr 120px 120px 100px 100px"] > *:nth-child(n+3){
+    display: none;
+  }
+
+  /* podcast featured cover + meta → stack */
+  [style*="grid-template-columns: 280px 1fr"]{
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* donate widget price input — keep number readable */
+  input[type="text"][inputmode="decimal"]{ font-size: 26px !important; }
+}
+
+/* ---------- small phone (≤ 480px) ---------- */
+@media (max-width: 480px){
+  .container, .container-tight{ padding: 0 12px; }
+  .topnav .brand,
+  .topnav .brand img{ height: 40px; max-width: 130px; }
+  .footer .ft-grid{ grid-template-columns: 1fr !important; }
+  .display{ font-size: clamp(26px, 10vw, 36px) !important; }
+
+  /* preset donation pills can wrap onto multiple rows */
+  [style*="display: flex"][style*="gap: 6px"]{ flex-wrap: wrap; }
+
+  /* meta strip pills on lesson detail */
+  [style*="display: flex"][style*="border: 1px solid var(--ink)"][style*="background: var(--card)"]{
+    flex-wrap: wrap;
+  }
 }

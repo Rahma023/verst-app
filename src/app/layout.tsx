@@ -1,7 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Raleway } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#008037",
+};
 
 const raleway = Raleway({
   variable: "--font-raleway",
