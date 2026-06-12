@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { sendEnrolmentEmail } from "@/app/program/[id]/enrol-actions";
 import { useModal } from "@/lib/auth/modal-context";
 import { createClient } from "@/lib/supabase/client";
 import { ModalShell } from "./modal-shell";
@@ -109,11 +110,19 @@ export function EnrolModal() {
       country_at_enrol: country,
       goal_text: goal,
     });
-    if (enrolErr && enrolErr.code !== "23505") {
-      // 23505 = unique violation (already enrolled) — treat as success
+    const wasAlreadyEnrolled = enrolErr?.code === "23505";
+    if (enrolErr && !wasAlreadyEnrolled) {
       setError(`Couldn't enroll: ${enrolErr.message}`);
       setBusy(false);
       return;
+    }
+
+    // Fire-and-forget confirmation email (only on a fresh enrolment — don't
+    // spam the inbox if they re-submit the same form).
+    if (!wasAlreadyEnrolled) {
+      void sendEnrolmentEmail(courseId).catch(() => {
+        // Email failure must never block the UX — already logged server-side.
+      });
     }
 
     setSuccess(true);
