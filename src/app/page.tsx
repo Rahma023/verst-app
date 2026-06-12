@@ -176,7 +176,7 @@ export default async function HomePage() {
 
       {/* ───────── AI TUTOR ───────── */}
       <section style={{ background: "var(--forest-2)", color: "#fff", position: "relative", overflow: "hidden" }}>
-        <AmbientBackdrop particles={8} />
+        <AmbientBackdrop particles={12} />
         <div className="container" style={{ padding: "88px 32px", position: "relative" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 72, alignItems: "center" }}>
             <div className="anim-fade-in-up">

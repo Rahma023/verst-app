@@ -333,10 +333,15 @@ textarea.input{ height:auto; padding:12px 14px; line-height:1.5; resize:vertical
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 85% 55% at 18% 12%, rgba(88,150,48,.18) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 45% at 88% 22%, rgba(110,181,64,.12) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 40% at 14% 88%, rgba(0,128,55,.14)  0%, transparent 55%),
-    radial-gradient(ellipse 65% 45% at 90% 88%, rgba(176,81,46,.08) 0%, transparent 55%);
+    radial-gradient(ellipse 90% 60% at 18% 12%, rgba(88,150,48,.40) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 88% 22%, rgba(110,181,64,.32) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 45% at 14% 88%, rgba(0,128,55,.36)  0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 88%, rgba(176,81,46,.20) 0%, transparent 60%);
+  animation: hue-shift 12s ease-in-out infinite;
+}
+@keyframes hue-shift{
+  0%, 100% { filter: hue-rotate(0deg)   saturate(1);   }
+  50%      { filter: hue-rotate(-8deg)  saturate(1.25); }
 }
 /* Layer 2: subtle dot grid */
 .ambient-backdrop::after{
@@ -347,15 +352,53 @@ textarea.input{ height:auto; padding:12px 14px; line-height:1.5; resize:vertical
   background-image: radial-gradient(rgba(255,255,255,1) 1px, transparent 1px);
   background-size: 18px 18px;
 }
-/* drifting "particles" — small moss dots that float diagonally */
+/* drifting "particles" — moss dots that float diagonally with a glow trail */
 .ambient-drift-particle{
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: rgba(88,150,48,.55);
-  box-shadow: 0 0 14px rgba(88,150,48,.6);
-  animation: drift 14s ease-in-out infinite;
+  background: rgba(110,181,64,.85);
+  box-shadow:
+    0 0 24px  rgba(110,181,64,.9),
+    0 0 48px  rgba(88,150,48,.55),
+    0 0 96px  rgba(88,150,48,.30);
+  animation: drift 9s ease-in-out infinite;
+}
+
+/* slow "breathing" aura layer — a big radial that gently pulses */
+.ambient-breath{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 50% 40%,
+                              rgba(110,181,64,.20) 0%,
+                              rgba(88,150,48,.10) 35%,
+                              transparent 75%);
+  animation: breathe 7s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%, 100% { opacity: .45; transform: scale(1);    }
+  50%      { opacity: .95; transform: scale(1.06); }
+}
+
+/* a slowly orbiting glow blob — used as a single accent inside heroes */
+.ambient-orbit{
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(60px);
+  background: radial-gradient(circle, rgba(110,181,64,.45) 0%, transparent 70%);
+  animation: orbit 18s linear infinite;
+  pointer-events: none;
+}
+@keyframes orbit{
+  0%   { transform: translate(-40%, -20%); }
+  25%  { transform: translate(30%,  -40%); }
+  50%  { transform: translate(40%,  20%);  }
+  75%  { transform: translate(-30%, 30%);  }
+  100% { transform: translate(-40%, -20%); }
 }
 /* corner vignette to focus attention on the content */
 .ambient-vignette{

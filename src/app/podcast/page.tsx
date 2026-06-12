@@ -64,7 +64,7 @@ export default async function PodcastPage(props: {
           >
             <ClimateViz variant="wave" style={{ height: "100%", width: "100%", borderRadius: 0 }} />
           </div>
-          <AmbientBackdrop particles={6} vignette={false} />
+          <AmbientBackdrop particles={10} vignette={false} />
           <div
             className="container"
             style={{

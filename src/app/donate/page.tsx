@@ -93,7 +93,7 @@ export default async function DonatePage() {
           overflow: "hidden",
         }}
       >
-        <AmbientBackdrop particles={8} />
+        <AmbientBackdrop particles={12} />
         <div
           className="container"
           style={{
