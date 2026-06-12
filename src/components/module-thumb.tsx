@@ -40,11 +40,11 @@ export function ModuleThumb({
 
   return (
     <div
-      className={className}
+      className={(className ? className + " " : "") + "thumb-moss-glow"}
       style={{
         position: "relative",
         overflow: "hidden",
-        borderRadius: 8,
+        borderRadius: 12,
         background: "var(--forest-2)",
         ...style,
       }}

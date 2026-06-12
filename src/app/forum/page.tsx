@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Avatar } from "@/components/avatar";
 import { Footer } from "@/components/footer";
+import { HeroGlow } from "@/components/hero-glow";
 import { Icon } from "@/components/icon";
 import { TopNav } from "@/components/top-nav";
 import {
@@ -48,42 +49,57 @@ export default async function ForumIndexPage(props: {
       <TopNav active="forum" />
 
       {/* hero */}
-      <section style={{ borderBottom: "1px solid var(--line)", background: "var(--card-2)" }}>
+      <section className="hero-dark" style={{ borderBottom: "1px solid var(--ink)" }}>
+        <HeroGlow orbs={3} />
         <div
           className="container"
           style={{
-            padding: "48px 32px 36px",
+            padding: "72px 32px 36px",
             display: "grid",
             gridTemplateColumns: "1.4fr 1fr",
             gap: 48,
             alignItems: "end",
+            position: "relative",
+            zIndex: 1,
           }}
         >
-          <div>
-            <div className="eyebrow" style={{ marginBottom: 14 }}>
-              · The forum · expert-moderated
-            </div>
+          <div className="anim-fade-in-up">
+            <span className="glass-pill" style={{ marginBottom: 22 }}>
+              <span className="glass-pill-dot" />
+              The forum · expert-moderated
+            </span>
             <h1
               className="display"
               style={{
                 fontSize: "clamp(40px, 6vw, 72px)",
                 letterSpacing: "-.03em",
                 marginBottom: 14,
+                color: "#fff",
               }}
             >
-              Where <em>practitioners</em> trade
+              Where <em className="gradient-moss">practitioners</em> trade
               <br />
               field-notes.
             </h1>
-            <p style={{ fontSize: 16, color: "var(--ink-2)", maxWidth: 520, lineHeight: 1.55 }}>
+            <p
+              style={{
+                fontSize: 16,
+                color: "rgba(255,255,255,.78)",
+                maxWidth: 520,
+                lineHeight: 1.6,
+              }}
+            >
               Every question is reviewed within 24h. Every answer from a verified expert is
               flagged. Signal-to-noise is the only metric that matters.
             </p>
           </div>
-          <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+          <div
+            className="anim-fade-in-up anim-delay-200"
+            style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}
+          >
             <Link
               href="/forum/new"
-              className="btn btn-pri btn-lg"
+              className="btn-glass btn-glass-pri"
               style={{ textDecoration: "none" }}
             >
               <Icon name="plus" size={14} /> Ask a question
@@ -92,13 +108,17 @@ export default async function ForumIndexPage(props: {
         </div>
 
         {/* stats strip */}
-        <div className="container" style={{ padding: "0 32px 32px" }}>
+        <div
+          className="container"
+          style={{ padding: "0 32px 36px", position: "relative", zIndex: 1 }}
+        >
           <div
+            className="glass-card anim-fade-in-up anim-delay-300"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(3,1fr)",
-              border: "1px solid var(--ink)",
-              background: "var(--paper)",
+              borderRadius: 14,
+              overflow: "hidden",
             }}
           >
             {(
@@ -112,7 +132,8 @@ export default async function ForumIndexPage(props: {
                 key={i}
                 style={{
                   padding: "18px 22px",
-                  borderRight: i < a.length - 1 ? "1px solid var(--line)" : "none",
+                  borderRight:
+                    i < a.length - 1 ? "1px solid rgba(255,255,255,.14)" : "none",
                   display: "flex",
                   alignItems: "baseline",
                   gap: 14,
@@ -120,10 +141,10 @@ export default async function ForumIndexPage(props: {
               >
                 <span
                   style={{
-                    fontWeight: 700,
+                    fontWeight: 800,
                     fontSize: 32,
                     lineHeight: 1,
-                    color: "var(--ink)",
+                    color: "#fff",
                     letterSpacing: "-.02em",
                   }}
                 >
@@ -133,9 +154,10 @@ export default async function ForumIndexPage(props: {
                   className="mono"
                   style={{
                     fontSize: 10,
-                    letterSpacing: ".12em",
-                    color: "var(--ink-3)",
+                    letterSpacing: ".14em",
+                    color: "var(--moss)",
                     textTransform: "uppercase",
+                    fontWeight: 700,
                   }}
                 >
                   {l}

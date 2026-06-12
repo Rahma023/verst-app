@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Avatar } from "@/components/avatar";
 import { ClimateViz } from "@/components/climate-viz";
 import { Footer } from "@/components/footer";
+import { HeroGlow } from "@/components/hero-glow";
 import { Icon } from "@/components/icon";
 import { TopNav } from "@/components/top-nav";
 import { WebinarRegisterButton } from "@/components/webinar-register-button";
@@ -75,29 +76,38 @@ export default async function WebinarsPage(props: {
       <TopNav active="webinars" />
 
       {/* hero */}
-      <section style={{ borderBottom: "1px solid var(--line)" }}>
-        <div className="container" style={{ padding: "48px 32px 36px" }}>
-          <div style={{ marginBottom: 32, maxWidth: 760 }}>
-            <div className="eyebrow" style={{ marginBottom: 12 }}>
-              · The webinar series
-            </div>
+      <section className="hero-dark" style={{ borderBottom: "1px solid var(--ink)" }}>
+        <HeroGlow orbs={3} />
+        <div
+          className="container"
+          style={{ padding: "72px 32px 36px", position: "relative", zIndex: 1 }}
+        >
+          <div
+            className="anim-fade-in-up"
+            style={{ marginBottom: 32, maxWidth: 760 }}
+          >
+            <span className="glass-pill" style={{ marginBottom: 22 }}>
+              <span className="glass-pill-dot" />
+              The webinar series · two live sessions a month
+            </span>
             <h1
               className="display"
               style={{
                 fontSize: "clamp(40px, 6vw, 72px)",
                 letterSpacing: "-.03em",
                 marginTop: 8,
+                color: "#fff",
               }}
             >
-              <em>Webinars.</em>
+              <em className="gradient-moss">Webinars.</em>
             </h1>
             <p
               style={{
                 fontSize: 16,
-                color: "var(--ink-2)",
+                color: "rgba(255,255,255,.78)",
                 maxWidth: 560,
                 marginTop: 14,
-                lineHeight: 1.55,
+                lineHeight: 1.6,
               }}
             >
               Two live sessions a month — methodology authors, regulators, project developers.
@@ -105,10 +115,21 @@ export default async function WebinarsPage(props: {
             </p>
           </div>
 
-          {featured && <FeaturedCard w={featured} defaultEmail={defaultEmail} />}
+          {featured && (
+            <div className="anim-fade-in-up anim-delay-200">
+              <FeaturedCard w={featured} defaultEmail={defaultEmail} />
+            </div>
+          )}
         </div>
+      </section>
 
-        {/* tabs + topic chips */}
+      {/* tabs + topic chips — light strip below the dark hero */}
+      <div
+        style={{
+          background: "var(--paper-2)",
+          borderBottom: "1px solid var(--line)",
+        }}
+      >
         <div
           className="container"
           style={{
@@ -116,7 +137,6 @@ export default async function WebinarsPage(props: {
             display: "flex",
             justifyContent: "space-between",
             gap: 16,
-            borderTop: "1px solid var(--line)",
             alignItems: "center",
             flexWrap: "wrap",
           }}
@@ -171,7 +191,7 @@ export default async function WebinarsPage(props: {
             })}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* body */}
       <section className="container" style={{ padding: "40px 32px 80px" }}>

@@ -611,6 +611,72 @@ textarea.input{ height:auto; padding:12px 14px; line-height:1.5; resize:vertical
     inset 0 1px 0 rgba(255,255,255,.18);
 }
 
+/* Green glow shadow utilities — apply to cards, thumbnails, anything that
+   should feel like it's "floating with green light" (matches the BlockNest
+   feature-card vibe). */
+.shadow-moss{
+  box-shadow:
+    0 12px 28px rgba(0,128,55,.18),
+    0 4px 12px  rgba(0,0,0,.18);
+}
+.shadow-moss-lg{
+  box-shadow:
+    0 20px 50px rgba(0,128,55,.32),
+    0 8px 22px  rgba(110,181,64,.18),
+    0 2px 6px   rgba(0,0,0,.22);
+}
+.shadow-moss-soft{
+  box-shadow:
+    0 6px 24px rgba(110,181,64,.14),
+    0 2px 6px  rgba(0,0,0,.10);
+}
+/* Module thumb specific — used by ModuleThumb so the card "lifts" off the page */
+.thumb-moss-glow{
+  box-shadow:
+    0 24px 60px rgba(0,128,55,.28),
+    0 8px 22px  rgba(88,150,48,.18),
+    0 0 0 1px  rgba(110,181,64,.15);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+.thumb-moss-glow:hover{
+  box-shadow:
+    0 30px 80px rgba(0,128,55,.42),
+    0 12px 30px rgba(110,181,64,.26),
+    0 0 0 1px  rgba(110,181,64,.30);
+  transform: translateY(-3px);
+}
+
+/* Light-background variant of the glow CTA — for pages we don't convert to
+   dark backgrounds. Same gradient + glow but readable on white. */
+.btn-pri-glow{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font: 700 14px/1 var(--font-raleway), sans-serif;
+  background: linear-gradient(135deg, #008037 0%, #589630 50%, #6EB540 100%);
+  background-size: 200% 200%;
+  color: #fff;
+  border: 1px solid rgba(0,128,55,.6);
+  box-shadow:
+    0 12px 28px rgba(0,128,55,.30),
+    0 4px 10px  rgba(0,128,55,.18),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s ease;
+  animation: gradient-shift 4s ease-in-out infinite;
+}
+.btn-pri-glow:hover{
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 40px rgba(0,128,55,.45),
+    0 6px 16px  rgba(110,181,64,.28),
+    inset 0 1px 0 rgba(255,255,255,.30);
+}
+
 /* ===== cards ===== */
 .card{ background: var(--card); border:1px solid var(--line); border-radius: var(--r-3); }
 .card-flat{ background: var(--card); border:1px solid var(--line); }

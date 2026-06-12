@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Footer } from "@/components/footer";
+import { HeroGlow } from "@/components/hero-glow";
 import { Icon } from "@/components/icon";
 import { ModuleRow } from "@/components/module-card";
 import { TopNav } from "@/components/top-nav";
@@ -41,8 +42,12 @@ export default async function ProgramPage(props: {
       <TopNav active="program" />
 
       {/* page header */}
-      <section style={{ borderBottom: "1px solid var(--line)" }}>
-        <div className="container" style={{ padding: "56px 32px 36px" }}>
+      <section className="hero-dark" style={{ borderBottom: "1px solid var(--ink)" }}>
+        <HeroGlow orbs={3} />
+        <div
+          className="container"
+          style={{ padding: "72px 32px 48px", position: "relative", zIndex: 1 }}
+        >
           <div
             style={{
               display: "grid",
@@ -53,40 +58,45 @@ export default async function ProgramPage(props: {
             }}
           >
             {/* left column: existing hero copy */}
-            <div>
-              <div className="eyebrow" style={{ marginBottom: 14 }}>
-                · The Verst Academy program · self-paced
-              </div>
+            <div className="anim-fade-in-up">
+              <span className="glass-pill" style={{ marginBottom: 22 }}>
+                <span className="glass-pill-dot" />
+                The Verst Academy program · self-paced
+              </span>
               <h1
                 className="display"
-                style={{ fontSize: "clamp(40px, 6vw, 72px)", letterSpacing: "-.03em" }}
+                style={{
+                  fontSize: "clamp(40px, 6vw, 72px)",
+                  letterSpacing: "-.03em",
+                  color: "#fff",
+                  marginBottom: 18,
+                }}
               >
                 Two sections.
                 <br />
-                One <em>program</em>.
+                One <em className="gradient-moss">program</em>.
               </h1>
               <p
                 style={{
-                  fontSize: 16,
-                  color: "var(--ink-2)",
-                  maxWidth: 540,
+                  fontSize: 16.5,
+                  color: "rgba(255,255,255,.78)",
+                  maxWidth: 560,
                   marginTop: 18,
-                  lineHeight: 1.55,
+                  lineHeight: 1.6,
                 }}
               >
-                <strong>Section A · Carbon Markets</strong> covers the science, accounting, finance
-                and policy of carbon.{" "}
-                <strong>Section B · AI in Climate</strong> covers how artificial intelligence is
-                reshaping measurement, modelling and operations. Take any module independently, or
-                work through the full program.
+                <strong style={{ color: "#fff" }}>Section A · Carbon Markets</strong> covers the
+                science, accounting, finance and policy of carbon.{" "}
+                <strong style={{ color: "#fff" }}>Section B · AI in Climate</strong> covers how
+                artificial intelligence is reshaping measurement, modelling and operations. Take
+                any module independently, or work through the full program.
               </p>
             </div>
 
             {/* right column: program-at-a-glance panel */}
             <aside
+              className="glass-card anim-fade-in-up anim-delay-200"
               style={{
-                border: "1px solid var(--ink)",
-                background: "var(--card)",
                 padding: 24,
                 display: "flex",
                 flexDirection: "column",
@@ -99,13 +109,25 @@ export default async function ProgramPage(props: {
                   justifyContent: "space-between",
                   alignItems: "center",
                   paddingBottom: 12,
-                  borderBottom: "1px solid var(--ink)",
+                  borderBottom: "1px solid rgba(255,255,255,.14)",
                 }}
               >
-                <span className="label" style={{ color: "var(--ink)" }}>
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: 10,
+                    letterSpacing: ".18em",
+                    color: "var(--moss)",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                  }}
+                >
                   PROGRAM AT A GLANCE
                 </span>
-                <span className="mono" style={{ fontSize: 10, color: "var(--ink-3)" }}>
+                <span
+                  className="mono"
+                  style={{ fontSize: 10, color: "rgba(255,255,255,.55)" }}
+                >
                   MAY 2026
                 </span>
               </header>
@@ -115,27 +137,19 @@ export default async function ProgramPage(props: {
                 <div
                   style={{
                     padding: "16px 14px",
-                    background: "var(--forest-2)",
-                    borderRadius: 8,
+                    background: "rgba(0,128,55,.18)",
+                    border: "1px solid rgba(110,181,64,.32)",
+                    borderRadius: 10,
                     color: "#fff",
                     textAlign: "center",
                     position: "relative",
                     overflow: "hidden",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
                   }}
                 >
                   <div
                     style={{
-                      position: "absolute",
-                      inset: 0,
-                      opacity: 0.07,
-                      backgroundImage:
-                        "radial-gradient(rgba(255,255,255,1) 1px, transparent 1px)",
-                      backgroundSize: "12px 12px",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "relative",
                       fontSize: 36,
                       fontWeight: 800,
                       lineHeight: 1,
@@ -148,7 +162,6 @@ export default async function ProgramPage(props: {
                   <div
                     className="mono"
                     style={{
-                      position: "relative",
                       fontSize: 9,
                       marginTop: 8,
                       letterSpacing: ".18em",
@@ -160,10 +173,9 @@ export default async function ProgramPage(props: {
                   </div>
                   <div
                     style={{
-                      position: "relative",
                       fontSize: 11,
                       marginTop: 2,
-                      color: "#D9DCD3",
+                      color: "rgba(255,255,255,.78)",
                       fontWeight: 500,
                     }}
                   >
@@ -173,10 +185,12 @@ export default async function ProgramPage(props: {
                 <div
                   style={{
                     padding: "16px 14px",
-                    background: "var(--paper-2)",
-                    border: "1px solid var(--line)",
-                    borderRadius: 8,
+                    background: "rgba(255,255,255,.08)",
+                    border: "1px solid rgba(255,255,255,.18)",
+                    borderRadius: 10,
                     textAlign: "center",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
                   }}
                 >
                   <div
@@ -184,7 +198,7 @@ export default async function ProgramPage(props: {
                       fontSize: 36,
                       fontWeight: 800,
                       lineHeight: 1,
-                      color: "var(--forest)",
+                      color: "#fff",
                       letterSpacing: "-.02em",
                     }}
                   >
@@ -197,7 +211,7 @@ export default async function ProgramPage(props: {
                       marginTop: 8,
                       letterSpacing: ".18em",
                       fontWeight: 700,
-                      color: "var(--ink-2)",
+                      color: "rgba(255,255,255,.78)",
                     }}
                   >
                     SECTION B
@@ -206,7 +220,7 @@ export default async function ProgramPage(props: {
                     style={{
                       fontSize: 11,
                       marginTop: 2,
-                      color: "var(--ink-3)",
+                      color: "rgba(255,255,255,.6)",
                       fontWeight: 500,
                     }}
                   >
@@ -233,14 +247,15 @@ export default async function ProgramPage(props: {
                       display: "grid",
                       gridTemplateColumns: "1fr auto",
                       padding: "9px 0",
-                      borderBottom: i < a.length - 1 ? "1px dashed var(--line)" : "none",
+                      borderBottom:
+                        i < a.length - 1 ? "1px dashed rgba(255,255,255,.12)" : "none",
                       alignItems: "baseline",
                     }}
                   >
-                    <span style={{ fontSize: 12.5, color: "var(--ink-2)" }}>{k}</span>
+                    <span style={{ fontSize: 12.5, color: "rgba(255,255,255,.72)" }}>{k}</span>
                     <span
                       className="mono"
-                      style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)" }}
+                      style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}
                     >
                       {v}
                     </span>
@@ -248,36 +263,55 @@ export default async function ProgramPage(props: {
                 ))}
               </div>
 
-              {/* handwritten tape note for warmth */}
               <div
-                className="tape-note"
-                style={{ marginTop: 4, fontSize: 12.5, lineHeight: 1.5 }}
+                style={{
+                  marginTop: 4,
+                  padding: "10px 14px",
+                  background: "rgba(110,181,64,.12)",
+                  border: "1px solid rgba(110,181,64,.28)",
+                  borderRadius: 8,
+                  fontSize: 12.5,
+                  lineHeight: 1.5,
+                  color: "rgba(255,255,255,.82)",
+                  fontStyle: "italic",
+                }}
               >
-                Built for African project developers, corporate sustainability teams,
-                and the next generation of climate professionals.
+                Built for African project developers, corporate sustainability teams, and the
+                next generation of climate professionals.
               </div>
             </aside>
           </div>
 
-          {/* category filter */}
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {categories.map((c) => {
-              const isActive = cat === c;
-              const href = c === "All" ? "/program" : `/program?cat=${encodeURIComponent(c)}`;
-              return (
-                <Link
-                  key={c}
-                  href={href}
-                  className={"chip " + (isActive ? "on" : "")}
-                  style={{ textDecoration: "none" }}
-                >
-                  {c}
-                </Link>
-              );
-            })}
-          </div>
         </div>
       </section>
+
+      {/* category filter — kept on a light strip below the dark hero */}
+      <div
+        style={{
+          background: "var(--paper-2)",
+          borderBottom: "1px solid var(--line)",
+        }}
+      >
+        <div
+          className="container"
+          style={{ padding: "18px 32px", display: "flex", gap: 6, flexWrap: "wrap" }}
+        >
+          {categories.map((c) => {
+            const isActive = cat === c;
+            const href = c === "All" ? "/program" : `/program?cat=${encodeURIComponent(c)}`;
+            return (
+              <Link
+                key={c}
+                href={href}
+                className={"chip " + (isActive ? "on" : "")}
+                style={{ textDecoration: "none" }}
+              >
+                {c}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
 
       {/* body — grouped by section */}
       <div className="container" style={{ padding: "24px 32px 80px" }}>

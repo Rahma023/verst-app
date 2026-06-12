@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Footer } from "@/components/footer";
+import { HeroGlow } from "@/components/hero-glow";
 import { Icon } from "@/components/icon";
 import { TopNav } from "@/components/top-nav";
 import {
@@ -50,8 +51,12 @@ export default async function LibraryPage(props: {
       <TopNav active="library" />
 
       {/* hero */}
-      <section style={{ borderBottom: "1px solid var(--line)" }}>
-        <div className="container" style={{ padding: "56px 32px 28px" }}>
+      <section className="hero-dark" style={{ borderBottom: "1px solid var(--ink)" }}>
+        <HeroGlow orbs={3} />
+        <div
+          className="container"
+          style={{ padding: "72px 32px 28px", position: "relative", zIndex: 1 }}
+        >
           <div
             style={{
               display: "grid",
@@ -60,41 +65,47 @@ export default async function LibraryPage(props: {
               alignItems: "end",
             }}
           >
-            <div>
-              <div className="eyebrow" style={{ marginBottom: 14 }}>
-                · Resource library · public + free
-              </div>
+            <div className="anim-fade-in-up">
+              <span className="glass-pill" style={{ marginBottom: 22 }}>
+                <span className="glass-pill-dot" />
+                Resource library · public + free
+              </span>
               <h1
                 className="display"
                 style={{
                   fontSize: "clamp(40px, 6vw, 76px)",
                   letterSpacing: "-.03em",
                   marginBottom: 18,
+                  color: "#fff",
                 }}
               >
-                The <em>field manual</em>.
+                The <em className="gradient-moss">field manual</em>.
               </h1>
-              <p style={{ fontSize: 16, color: "var(--ink-2)", maxWidth: 560, lineHeight: 1.6 }}>
+              <p
+                style={{
+                  fontSize: 16,
+                  color: "rgba(255,255,255,.78)",
+                  maxWidth: 560,
+                  lineHeight: 1.6,
+                }}
+              >
                 Methodology documents, datasets, financial-model templates and briefs — every
                 resource a Verst instructor would put in your hands.
               </p>
             </div>
             <div
-              style={{
-                padding: 18,
-                background: "var(--card-2)",
-                border: "1px solid var(--line)",
-                borderRadius: 10,
-              }}
+              className="glass-card anim-fade-in-up anim-delay-200"
+              style={{ padding: 22 }}
             >
               <div
                 className="mono"
                 style={{
                   fontSize: 10,
-                  letterSpacing: ".14em",
+                  letterSpacing: ".18em",
                   fontWeight: 700,
-                  color: "var(--ink-3)",
-                  marginBottom: 10,
+                  color: "var(--moss)",
+                  marginBottom: 12,
+                  textTransform: "uppercase",
                 }}
               >
                 LIBRARY AT A GLANCE
@@ -103,13 +114,13 @@ export default async function LibraryPage(props: {
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr auto",
-                  rowGap: 8,
+                  rowGap: 9,
                   fontSize: 13,
-                  color: "var(--ink-2)",
+                  color: "rgba(255,255,255,.72)",
                 }}
               >
                 <span>Total resources</span>
-                <span className="mono" style={{ fontWeight: 700, color: "var(--ink)" }}>
+                <span className="mono" style={{ fontWeight: 700, color: "#fff" }}>
                   {total}
                 </span>
                 {(["Methodology", "Dataset", "Template", "Brief", "Reference"] as const).map(
@@ -121,7 +132,7 @@ export default async function LibraryPage(props: {
                       <span>{c}</span>
                       <span
                         className="mono"
-                        style={{ fontWeight: 700, color: "var(--ink)" }}
+                        style={{ fontWeight: 700, color: "#fff" }}
                       >
                         {counts[c] ?? 0}
                       </span>
@@ -138,7 +149,7 @@ export default async function LibraryPage(props: {
               display: "flex",
               gap: 0,
               marginTop: 36,
-              borderBottom: "1px solid var(--ink)",
+              borderBottom: "1px solid rgba(255,255,255,.22)",
               flexWrap: "wrap",
             }}
           >
@@ -151,11 +162,13 @@ export default async function LibraryPage(props: {
                   href={href}
                   style={{
                     padding: "12px 22px",
-                    background: isOn ? "var(--ink)" : "transparent",
-                    color: isOn ? "var(--paper)" : "var(--ink-2)",
+                    background: isOn ? "rgba(255,255,255,.12)" : "transparent",
+                    color: isOn ? "#fff" : "rgba(255,255,255,.72)",
                     textDecoration: "none",
                     fontSize: 13,
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    backdropFilter: isOn ? "blur(8px)" : "none",
+                    WebkitBackdropFilter: isOn ? "blur(8px)" : "none",
                   }}
                 >
                   {c}
@@ -164,7 +177,7 @@ export default async function LibraryPage(props: {
                     style={{
                       fontSize: 10,
                       marginLeft: 8,
-                      color: isOn ? "var(--moss)" : "var(--ink-3)",
+                      color: isOn ? "var(--moss)" : "rgba(255,255,255,.55)",
                     }}
                   >
                     {c === "All" ? total : counts[c] ?? 0}
@@ -183,7 +196,7 @@ export default async function LibraryPage(props: {
             >
               <span
                 className="mono"
-                style={{ fontSize: 11, color: "var(--ink-3)", letterSpacing: ".06em" }}
+                style={{ fontSize: 11, color: "rgba(255,255,255,.55)", letterSpacing: ".06em" }}
               >
                 {resources.length} ITEMS
               </span>
