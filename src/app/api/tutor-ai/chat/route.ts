@@ -4,6 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
+const GUEST_TURN_LIMIT = 3;
+const GUEST_COOKIE = "verst_guest_chat_count";
+
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
@@ -17,17 +20,25 @@ type RequestBody = {
     lessonCode?: string;
     lessonTitle?: string;
   };
+  /** Set true for the public home-page demo. Caps free turns at GUEST_TURN_LIMIT. */
+  guestMode?: boolean;
 };
 
+function parseGuestCount(cookieHeader: string | null): number {
+  if (!cookieHeader) return 0;
+  const m = cookieHeader.match(new RegExp(`${GUEST_COOKIE}=(\\d+)`));
+  if (!m) return 0;
+  const n = parseInt(m[1], 10);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export async function POST(request: Request) {
-  // Auth check
+  // Auth check — guest mode is allowed only when explicitly requested by the client
+  // AND the guest is under the free-turn cap.
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
-  }
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
@@ -46,12 +57,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { messages, lessonContext } = body;
+  const { messages, lessonContext, guestMode } = body;
   if (!Array.isArray(messages) || messages.length === 0) {
     return NextResponse.json(
       { error: "Provide at least one message." },
       { status: 400 },
     );
+  }
+
+  // Anonymous access: only allowed when the client opts in via guestMode AND has
+  // sent fewer than GUEST_TURN_LIMIT messages this session.
+  let guestCount = 0;
+  let isGuest = false;
+  if (!user) {
+    if (!guestMode) {
+      return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+    }
+    guestCount = parseGuestCount(request.headers.get("cookie"));
+    if (guestCount >= GUEST_TURN_LIMIT) {
+      return NextResponse.json(
+        {
+          error: "guest_limit_reached",
+          message: "Sign up to keep chatting — free, takes ~30 seconds.",
+        },
+        { status: 402 },
+      );
+    }
+    isGuest = true;
   }
 
   const moduleLine = lessonContext?.moduleTitle
@@ -108,12 +140,20 @@ Length: aim for ~2-5 short paragraphs unless a list or table is clearer. Long-fo
       },
     });
 
-    return new Response(readable, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-cache, no-transform",
-      },
-    });
+    const responseHeaders: Record<string, string> = {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-cache, no-transform",
+    };
+    // Bump the guest-turn cookie on every successful anonymous response.
+    if (isGuest) {
+      const newCount = guestCount + 1;
+      // 24h expiry — long enough to remember within a session, short enough not to stick forever.
+      responseHeaders["Set-Cookie"] =
+        `${GUEST_COOKIE}=${newCount}; Path=/; Max-Age=86400; SameSite=Lax`;
+      responseHeaders["X-Guest-Remaining"] = String(GUEST_TURN_LIMIT - newCount);
+    }
+
+    return new Response(readable, { headers: responseHeaders });
   } catch (err) {
     if (err instanceof Anthropic.AuthenticationError) {
       return NextResponse.json(

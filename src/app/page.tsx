@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AmbientBackdrop } from "@/components/ambient-backdrop";
+import { AskAiChat } from "@/components/ask-ai-chat";
 import { Avatar } from "@/components/avatar";
 import { ClimateViz } from "@/components/climate-viz";
 import { Footer } from "@/components/footer";
@@ -18,7 +19,6 @@ const PROGRAM_STATS: readonly [string, string, string][] = [
 ];
 
 const TUTOR_CHIPS = ["Cites sources", "Slide-aware", "Quizzes you", "Generates flashcards"] as const;
-const TUTOR_SUGGESTIONS = ["Quiz me on this", "Flashcards", "Summarise this lesson"] as const;
 const DONATE_PRESETS = ["$10", "$25", "$50", "$100"] as const;
 
 export default async function HomePage() {
@@ -245,144 +245,249 @@ export default async function HomePage() {
                   </span>
                 ))}
               </div>
-              <Link href="/lesson/1-1" className="btn btn-accent btn-lg">
-                Try the tutor live <Icon name="arrow-r" size={16} />
+              <Link href="/lesson/1-1" className="btn-glass btn-glass-pri">
+                Try the tutor in a lesson <Icon name="arrow-r" size={16} />
               </Link>
             </div>
 
+            <div>
+              <AskAiChat
+                guestMode
+                moduleCode="Demo"
+                moduleTitle="Public preview"
+                suggestions={[
+                  "What is additionality?",
+                  "Explain Article 6.2 in 3 sentences",
+                  "How does M-Pesa fit a community carbon project?",
+                ]}
+                emptyStateText="Try me — ask anything about carbon markets, climate science, methodologies (VM0044, Puro, Isometric), Article 6, MRV, or AI in climate. You get 3 free questions; sign up for unlimited."
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── HUMAN TUTOR ───────── */}
+      <section style={{ borderTop: "1px solid var(--line)", background: "var(--paper-2)" }}>
+        <div className="container" style={{ padding: "88px 32px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1.05fr",
+              gap: 72,
+              alignItems: "center",
+            }}
+          >
+            {/* mock convo on the left */}
             <div
+              className="shadow-moss"
               style={{
-                background: "rgba(0,0,0,.35)",
-                border: "1px solid #2a4a37",
-                borderRadius: 14,
-                padding: 22,
-                backdropFilter: "blur(6px)",
+                background: "#fff",
+                border: "1px solid var(--line)",
+                borderRadius: 16,
+                padding: 24,
+                position: "relative",
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
                   alignItems: "center",
-                  padding: "2px 4px 14px",
-                  borderBottom: "1px solid #2a4a37",
+                  justifyContent: "space-between",
+                  paddingBottom: 14,
+                  borderBottom: "1px solid var(--line)",
                   marginBottom: 16,
                 }}
               >
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  <Icon name="sparkle" size={14} stroke={1.8} style={{ color: "var(--moss)" }} />
-                  <span
-                    className="mono"
-                    style={{ fontSize: 11, letterSpacing: ".12em", color: "var(--moss)", fontWeight: 700 }}
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <div
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: "50%",
+                      background: "var(--forest)",
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: 13,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    VERST TUTOR
-                  </span>
+                    AE
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>
+                      Dr. Amaka Eze
+                    </div>
+                    <div
+                      className="mono"
+                      style={{
+                        fontSize: 10,
+                        letterSpacing: ".08em",
+                        color: "var(--ink-3)",
+                      }}
+                    >
+                      UNFCCC OBSERVER · LEAD TUTOR
+                    </div>
+                  </div>
                 </div>
-                <span className="mono" style={{ fontSize: 10, color: "#7A857F" }}>
-                  Module III · Lesson 3.4
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: 10,
+                    letterSpacing: ".1em",
+                    fontWeight: 700,
+                    padding: "4px 9px",
+                    borderRadius: 4,
+                    background: "rgba(0,128,55,.12)",
+                    color: "var(--forest)",
+                    border: "1px solid rgba(0,128,55,.3)",
+                  }}
+                >
+                  ✓ 24h SLA
                 </span>
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {/* learner question */}
                 <div
                   style={{
-                    alignSelf: "flex-end",
-                    maxWidth: "82%",
-                    background: "var(--forest)",
-                    color: "#fff",
-                    padding: "11px 15px",
-                    borderRadius: "14px 14px 2px 14px",
-                    fontSize: 13.5,
-                  }}
-                >
-                  Explain additionality for a project developer.
-                </div>
-                <div
-                  style={{
+                    alignSelf: "flex-start",
                     maxWidth: "92%",
-                    background: "#fff",
+                    background: "var(--paper-2)",
+                    border: "1px solid var(--line)",
                     color: "var(--ink)",
-                    padding: "15px 17px",
+                    padding: "12px 16px",
                     borderRadius: "14px 14px 14px 2px",
                     fontSize: 13.5,
                     lineHeight: 1.55,
                   }}
                 >
-                  A project is{" "}
-                  <em style={{ fontStyle: "italic", color: "var(--forest)", fontWeight: 600 }}>additional</em> if it
-                  would not have happened without carbon-credit revenue. In practice: show the project is uneconomic
-                  without credits, faces an institutional barrier, or isn&apos;t common practice in your region.
-                  <div style={{ display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
-                    {["slide 04", "ISO 14064-2 §6.4", "library · primer.pdf"].map((s) => (
-                      <span
-                        key={s}
-                        style={{
-                          fontSize: 10,
-                          padding: "3px 9px",
-                          background: "var(--paper-2)",
-                          borderRadius: 99,
-                          color: "var(--ink-3)",
-                          fontWeight: 600,
-                          letterSpacing: ".04em",
-                        }}
-                      >
-                        {s}
-                      </span>
-                    ))}
+                  My biochar project uses cashew shells. Verra reviewer flagged feedstock
+                  permanence. How have other developers framed this for VM0044?
+                  <div
+                    className="mono"
+                    style={{
+                      fontSize: 10,
+                      color: "var(--ink-3)",
+                      marginTop: 8,
+                      letterSpacing: ".06em",
+                    }}
+                  >
+                    Mariam Hassan · Project dev · Tanzania
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 6, marginTop: 6, flexWrap: "wrap" }}>
-                  {TUTOR_SUGGESTIONS.map((s) => (
-                    <span
-                      key={s}
-                      style={{
-                        padding: "5px 11px",
-                        borderRadius: 99,
-                        fontSize: 11,
-                        fontWeight: 500,
-                        background: "transparent",
-                        color: "#aab8a8",
-                        border: "1px solid #3a5547",
-                      }}
-                    >
-                      {s}
-                    </span>
-                  ))}
+
+                {/* tutor reply */}
+                <div
+                  style={{
+                    alignSelf: "flex-end",
+                    maxWidth: "92%",
+                    background: "var(--forest)",
+                    color: "#fff",
+                    padding: "13px 16px",
+                    borderRadius: "14px 14px 2px 14px",
+                    fontSize: 13.5,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  Cashew shells score well on permanence — the key is documenting your
+                  pyrolysis temp (≥500°C) and a 100-yr sequestration estimate using H/C
+                  ratio. I&apos;ll send the validation memo we used for the Mt. Kenya
+                  facility. Let&apos;s book 30 min to walk through the reviewer&apos;s
+                  specific paragraph.
                 </div>
 
                 <div
+                  className="mono"
                   style={{
-                    display: "flex",
-                    gap: 8,
-                    alignItems: "center",
-                    marginTop: 12,
-                    background: "rgba(0,0,0,.4)",
-                    border: "1px solid #2a4a37",
-                    borderRadius: 99,
-                    padding: "5px 5px 5px 16px",
+                    alignSelf: "flex-end",
+                    fontSize: 10,
+                    color: "var(--ink-3)",
+                    letterSpacing: ".06em",
+                    marginTop: 2,
                   }}
                 >
-                  <Icon name="sparkle" size={14} style={{ color: "var(--moss)" }} />
-                  <input
-                    type="text"
-                    placeholder="Ask the tutor anything…"
-                    readOnly
-                    style={{
-                      flex: 1,
-                      background: "transparent",
-                      border: "none",
-                      outline: "none",
-                      color: "#fff",
-                      fontSize: 13,
-                      padding: "8px 0",
-                      fontFamily: "inherit",
-                    }}
-                  />
-                  <button type="button" className="btn btn-accent btn-sm" style={{ height: 32 }}>
-                    Ask <Icon name="arrow-r" size={13} />
-                  </button>
+                  REPLIED IN 4H 12M · MARKED ACCEPTED
                 </div>
               </div>
+            </div>
+
+            {/* text on the right */}
+            <div>
+              <div className="eyebrow" style={{ color: "var(--forest)", marginBottom: 14 }}>
+                · When AI isn&apos;t enough
+              </div>
+              <h2
+                className="display"
+                style={{
+                  fontSize: "clamp(34px, 4.5vw, 56px)",
+                  marginBottom: 22,
+                  letterSpacing: "-.02em",
+                }}
+              >
+                Some questions deserve a <em className="gradient-moss">human</em>.
+              </h2>
+              <p
+                style={{
+                  fontSize: 17,
+                  color: "var(--ink-2)",
+                  maxWidth: 540,
+                  lineHeight: 1.6,
+                  marginBottom: 22,
+                }}
+              >
+                Every module has an assigned <strong>practitioner-tutor</strong> — an
+                African specialist in their methodology. When the AI can&apos;t answer, hit
+                the <em>Ask a tutor</em> button on any lesson. Replies within 24 hours,
+                often under 4.
+              </p>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: "0 0 28px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  fontSize: 14.5,
+                  color: "var(--ink-2)",
+                }}
+              >
+                {[
+                  ["Verified experts", "UNFCCC Observers, Verra project devs, methodology authors"],
+                  ["24h reply guarantee", "Most replies arrive in 2–6 hours"],
+                  ["Marked-accepted threads", "Answers stay searchable in your dashboard"],
+                ].map(([k, v]) => (
+                  <li key={k} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <span
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        background: "var(--forest)",
+                        color: "#fff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        flexShrink: 0,
+                        marginTop: 2,
+                      }}
+                    >
+                      ✓
+                    </span>
+                    <span>
+                      <strong>{k}</strong> — {v}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/lesson/1-1" className="btn-pri-glow">
+                See it in action <Icon name="arrow-r" size={14} />
+              </Link>
             </div>
           </div>
         </div>

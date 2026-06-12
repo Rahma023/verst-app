@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/icon";
 
@@ -10,19 +11,27 @@ type Props = {
   moduleTitle?: string;
   lessonCode?: string;
   lessonTitle?: string;
+  /** Public guest mode (home-page demo). Free turns capped server-side at 3. */
+  guestMode?: boolean;
+  /** Override the in-chat suggestion chips. Useful for the guest demo. */
+  suggestions?: readonly string[];
+  /** Override the empty-state opening line. Useful for the guest demo. */
+  emptyStateText?: string;
 };
 
-const SUGGESTIONS = [
+const DEFAULT_SUGGESTIONS = [
   "Quiz me on this lesson",
   "Summarise this lesson in 3 bullet points",
   "Give me a real-world example",
 ] as const;
 
 export function AskAiChat(props: Props) {
+  const suggestions = props.suggestions ?? DEFAULT_SUGGESTIONS;
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [guestLimitHit, setGuestLimitHit] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom on new messages
@@ -61,9 +70,17 @@ export function AskAiChat(props: Props) {
             lessonCode: props.lessonCode,
             lessonTitle: props.lessonTitle,
           },
+          guestMode: props.guestMode === true,
         }),
       });
 
+      if (res.status === 402) {
+        // Guest reached the free-turn cap — show the sign-up paywall.
+        setGuestLimitHit(true);
+        setMessages((m) => m.slice(0, -1));
+        setBusy(false);
+        return;
+      }
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: "Request failed" }));
         setError(err.error ?? `HTTP ${res.status}`);
@@ -175,7 +192,8 @@ export function AskAiChat(props: Props) {
       >
         {messages.length === 0 ? (
           <div style={{ fontSize: 13.5, color: "#D9DCD3", lineHeight: 1.55 }}>
-            Ask anything about this lesson — additionality, scope 3 boundaries, ISO 14064-2 §6.4, Article 6.2 ITMOs, you name it. Cite sources or methodologies for follow-ups.
+            {props.emptyStateText ??
+              "Ask anything about this lesson — additionality, scope 3 boundaries, ISO 14064-2 §6.4, Article 6.2 ITMOs, you name it. Cite sources or methodologies for follow-ups."}
           </div>
         ) : (
           messages.map((m, i) => {
@@ -206,7 +224,7 @@ export function AskAiChat(props: Props) {
         )}
       </div>
 
-      {messages.length === 0 && !busy && (
+      {messages.length === 0 && !busy && !guestLimitHit && (
         <div
           style={{
             position: "relative",
@@ -216,7 +234,7 @@ export function AskAiChat(props: Props) {
             marginBottom: 12,
           }}
         >
-          {SUGGESTIONS.map((s) => (
+          {suggestions.map((s) => (
             <button
               key={s}
               type="button"
@@ -236,6 +254,41 @@ export function AskAiChat(props: Props) {
               {s}
             </button>
           ))}
+        </div>
+      )}
+
+      {guestLimitHit && (
+        <div
+          style={{
+            position: "relative",
+            padding: "16px 18px",
+            background: "rgba(110,181,64,.12)",
+            border: "1px solid rgba(110,181,64,.35)",
+            borderRadius: 10,
+            marginBottom: 12,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 12,
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 4 }}>
+              That&apos;s your 3 free questions for today.
+            </div>
+            <div style={{ fontSize: 12.5, color: "#D9DCD3", lineHeight: 1.5 }}>
+              Sign up free in ~30 seconds to keep chatting — plus get module enrolment,
+              certificates and the practitioner forum.
+            </div>
+          </div>
+          <Link
+            href="/?signup=1"
+            className="btn-glass btn-glass-pri"
+            style={{ height: 38, padding: "0 18px", fontSize: 12.5, textDecoration: "none" }}
+          >
+            Sign up free <Icon name="arrow-r" size={12} />
+          </Link>
         </div>
       )}
 
