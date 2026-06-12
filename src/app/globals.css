@@ -411,6 +411,206 @@ textarea.input{ height:auto; padding:12px 14px; line-height:1.5; resize:vertical
                               rgba(0,0,0,.35) 100%);
 }
 
+/* ============================================================
+   HERO GLASS — adapted from the TechVerse/NEONE/BlockNest/Elevate
+   /NextAI references. Dark base + arched horizon glow + gradient
+   text + glass cards + floating 3D color shadows.
+   ============================================================ */
+
+/* Dark forest hero — replaces the light variant on the home page */
+.hero-dark{
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% -20%, rgba(0,128,55,.55) 0%, transparent 55%),
+    linear-gradient(180deg, #03130A 0%, #061d10 40%, #03130A 100%);
+  color: #fff;
+  isolation: isolate;
+}
+
+/* Top-arched horizon glow (the planet/curve from NEONE + BlockNest) */
+.hero-arc{
+  position: absolute;
+  left: 50%;
+  top: -680px;
+  width: 1400px;
+  height: 1400px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+                              transparent 0%,
+                              transparent 47.5%,
+                              rgba(110,181,64,.65) 49%,
+                              rgba(88,150,48,.45) 51%,
+                              transparent 56%);
+  filter: blur(2px);
+  animation: arc-breathe 7s ease-in-out infinite;
+}
+@keyframes arc-breathe{
+  0%, 100% { opacity: .9;  transform: translateX(-50%) scale(1);    }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.03); }
+}
+
+/* Bottom soft glow that meets the page below */
+.hero-arc-bottom{
+  position: absolute;
+  left: 50%;
+  bottom: -700px;
+  width: 1400px;
+  height: 1400px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+                              rgba(88,150,48,.30) 0%,
+                              transparent 55%);
+  filter: blur(20px);
+}
+
+/* Big floating 3D glass orbs — drop two or three into the hero */
+.hero-orb{
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+  z-index: 0;
+}
+.hero-orb-1{
+  top: 18%; left: -120px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(110,181,64,.55), transparent 70%);
+  animation: float-orb 14s ease-in-out infinite;
+}
+.hero-orb-2{
+  bottom: 8%; right: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(0,128,55,.60), transparent 70%);
+  animation: float-orb 18s ease-in-out infinite 2s;
+}
+.hero-orb-3{
+  top: 50%; right: 22%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(176,81,46,.35), transparent 70%);
+  animation: float-orb 22s ease-in-out infinite 4s;
+}
+@keyframes float-orb{
+  0%, 100% { transform: translate(0,0);       opacity: .85; }
+  33%      { transform: translate(40px, -30px); opacity: 1;  }
+  66%      { transform: translate(-20px, 40px); opacity: .7; }
+}
+
+/* Sparse star/particle field, sized for the hero */
+.hero-stars{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.55), transparent 50%),
+    radial-gradient(1px 1px at 22% 72%, rgba(255,255,255,.40), transparent 50%),
+    radial-gradient(1.5px 1.5px at 38% 28%, rgba(255,255,255,.65), transparent 50%),
+    radial-gradient(1px 1px at 55% 52%, rgba(255,255,255,.45), transparent 50%),
+    radial-gradient(1px 1px at 68% 14%, rgba(255,255,255,.55), transparent 50%),
+    radial-gradient(1.5px 1.5px at 78% 78%, rgba(255,255,255,.65), transparent 50%),
+    radial-gradient(1px 1px at 88% 38%, rgba(255,255,255,.40), transparent 50%),
+    radial-gradient(1px 1px at 6% 88%, rgba(255,255,255,.50), transparent 50%);
+  animation: stars-twinkle 6s ease-in-out infinite;
+}
+@keyframes stars-twinkle{
+  0%, 100% { opacity: .85; }
+  50%      { opacity: .55; }
+}
+
+/* Eyebrow pill badge above the hero title (NEONE/Elevate style) */
+.glass-pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 10px;
+  font: 600 12px/1 var(--font-raleway), sans-serif;
+  color: #fff;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  letter-spacing: .04em;
+}
+.glass-pill-dot{
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--moss), var(--forest));
+  box-shadow: 0 0 8px rgba(110,181,64,.7);
+}
+
+/* Gradient text for the hero accent word (NEONE/NextAI style) */
+.gradient-moss{
+  background: linear-gradient(135deg, #6EB540 0%, #98D86A 30%, #C4F19A 55%, #6EB540 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: normal;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+@keyframes gradient-shift{
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* Glass buttons for the hero CTA pair (TechVerse/NEONE style) */
+.btn-glass{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font: 700 14px/1 var(--font-raleway), sans-serif;
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all .2s ease;
+  text-decoration: none;
+}
+.btn-glass:hover{
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.36);
+  transform: translateY(-1px);
+}
+.btn-glass-pri{
+  background: linear-gradient(135deg, #008037 0%, #589630 50%, #6EB540 100%);
+  background-size: 200% 200%;
+  border-color: rgba(110,181,64,.7);
+  box-shadow:
+    0 0 30px rgba(110,181,64,.35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  animation: gradient-shift 4s ease-in-out infinite;
+}
+.btn-glass-pri:hover{
+  box-shadow:
+    0 0 42px rgba(110,181,64,.55),
+    inset 0 1px 0 rgba(255,255,255,.35);
+}
+
+/* Frosted glass card — for the stats sidebar */
+.glass-card{
+  background: linear-gradient(135deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.04) 100%);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 18px;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
 /* ===== cards ===== */
 .card{ background: var(--card); border:1px solid var(--line); border-radius: var(--r-3); }
 .card-flat{ background: var(--card); border:1px solid var(--line); }

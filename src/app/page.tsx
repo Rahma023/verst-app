@@ -33,29 +33,49 @@ export default async function HomePage() {
     <>
       <TopNav active="home" />
 
-      {/* ───────── HERO ───────── */}
-      <section style={{ borderBottom: "1px solid var(--line)", position: "relative", overflow: "hidden" }}>
-        <div className="container" style={{ padding: "64px 32px 72px", position: "relative" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 80, alignItems: "end" }}>
-            <div>
+      {/* ───────── HERO (glass + arched glow) ───────── */}
+      <section className="hero-dark" style={{ borderBottom: "1px solid var(--line)" }}>
+        <div className="hero-arc" aria-hidden="true" />
+        <div className="hero-arc-bottom" aria-hidden="true" />
+        <div className="hero-stars" aria-hidden="true" />
+        <div className="hero-orb hero-orb-1" aria-hidden="true" />
+        <div className="hero-orb hero-orb-2" aria-hidden="true" />
+        <div className="hero-orb hero-orb-3" aria-hidden="true" />
+
+        <div
+          className="container"
+          style={{ padding: "88px 32px 96px", position: "relative", zIndex: 1 }}
+        >
+          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 80, alignItems: "center" }}>
+            <div className="anim-fade-in-up">
+              <span className="glass-pill" style={{ marginBottom: 22 }}>
+                <span className="glass-pill-dot" />
+                Africa's climate-tech academy · early access beta
+              </span>
+
               <h1
                 className="display"
-                style={{ fontSize: "clamp(40px, 6vw, 72px)", marginBottom: 24, letterSpacing: "-.025em" }}
+                style={{
+                  fontSize: "clamp(40px, 6.4vw, 78px)",
+                  letterSpacing: "-.03em",
+                  lineHeight: 1.02,
+                  marginBottom: 24,
+                  color: "#fff",
+                }}
               >
-                The carbon economy
+                The carbon economy of the next decade,
                 <br />
-                of the next decade, taught
-                <br />
-                by its <em>practitioners</em>.
+                taught by its{" "}
+                <em className="gradient-moss">practitioners</em>.
               </h1>
 
               <p
                 style={{
-                  fontSize: 17,
-                  color: "var(--ink-2)",
-                  maxWidth: 540,
-                  lineHeight: 1.55,
-                  marginBottom: 32,
+                  fontSize: 17.5,
+                  color: "rgba(255,255,255,.78)",
+                  maxWidth: 560,
+                  lineHeight: 1.6,
+                  marginBottom: 36,
                 }}
               >
                 A two-section climate-tech program built for African project developers, corporate
@@ -64,38 +84,43 @@ export default async function HomePage() {
               </p>
 
               <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-                <Link href="/program" className="btn btn-pri btn-lg">
+                <Link href="/program" className="btn-glass btn-glass-pri">
                   Explore the program <Icon name="arrow-r" size={16} />
                 </Link>
-                <Link href="/lesson/1-1" className="btn btn-lg">
+                <Link href="/lesson/1-1" className="btn-glass">
                   <Icon name="play" size={12} /> Watch a lesson
                 </Link>
               </div>
             </div>
 
-            <div style={{ position: "relative" }}>
-              <div
-                style={{
-                  border: "1px solid var(--ink)",
-                  background: "var(--card)",
-                  padding: "20px 24px",
-                  position: "relative",
-                }}
-              >
+            <div style={{ position: "relative" }} className="anim-fade-in-up anim-delay-200">
+              <div className="glass-card" style={{ padding: "24px 28px", position: "relative" }}>
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                     paddingBottom: 14,
-                    borderBottom: "1px solid var(--ink)",
+                    borderBottom: "1px solid rgba(255,255,255,.14)",
                     marginBottom: 14,
                   }}
                 >
-                  <span className="label" style={{ color: "var(--ink)" }}>
+                  <span
+                    className="mono"
+                    style={{
+                      fontSize: 10,
+                      letterSpacing: ".18em",
+                      color: "var(--moss)",
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                    }}
+                  >
                     The program · in numbers
                   </span>
-                  <span className="mono" style={{ fontSize: 10, color: "var(--ink-3)" }}>
+                  <span
+                    className="mono"
+                    style={{ fontSize: 10, color: "rgba(255,255,255,.55)" }}
+                  >
                     MAY 2026
                   </span>
                 </div>
@@ -107,15 +132,26 @@ export default async function HomePage() {
                       gridTemplateColumns: "1fr auto auto",
                       gap: 14,
                       alignItems: "baseline",
-                      padding: "9px 0",
-                      borderBottom: i < a.length - 1 ? "1px dashed var(--line)" : "none",
+                      padding: "10px 0",
+                      borderBottom:
+                        i < a.length - 1 ? "1px dashed rgba(255,255,255,.10)" : "none",
                     }}
                   >
-                    <span style={{ fontSize: 13, color: "var(--ink-2)" }}>{k}</span>
-                    <span className="num" style={{ fontSize: 22, fontWeight: 600 }}>{v}</span>
+                    <span style={{ fontSize: 13, color: "rgba(255,255,255,.72)" }}>{k}</span>
+                    <span
+                      className="num"
+                      style={{ fontSize: 26, fontWeight: 700, color: "#fff" }}
+                    >
+                      {v}
+                    </span>
                     <span
                       className="mono"
-                      style={{ fontSize: 10, color: "var(--ink-3)", width: 100, textAlign: "right" }}
+                      style={{
+                        fontSize: 10,
+                        color: "rgba(255,255,255,.50)",
+                        width: 100,
+                        textAlign: "right",
+                      }}
                     >
                       {d}
                     </span>
