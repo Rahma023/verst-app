@@ -1,3 +1,4 @@
+import { AmbientBackdrop } from "@/components/ambient-backdrop";
 import { DonateWidget } from "@/components/donate-widget";
 import { Footer } from "@/components/footer";
 import { Icon } from "@/components/icon";
@@ -92,16 +93,7 @@ export default async function DonatePage() {
           overflow: "hidden",
         }}
       >
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.08,
-            backgroundImage: "radial-gradient(rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "16px 16px",
-          }}
-        />
+        <AmbientBackdrop particles={8} />
         <div
           className="container"
           style={{
@@ -113,7 +105,7 @@ export default async function DonatePage() {
             alignItems: "start",
           }}
         >
-          <div>
+          <div className="anim-fade-in-up">
             <div
               className="eyebrow"
               style={{ color: "var(--moss)", marginBottom: 14 }}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AmbientBackdrop } from "@/components/ambient-backdrop";
 import { Avatar } from "@/components/avatar";
 import { ClimateViz } from "@/components/climate-viz";
 import { Footer } from "@/components/footer";
@@ -175,18 +176,10 @@ export default async function HomePage() {
 
       {/* ───────── AI TUTOR ───────── */}
       <section style={{ background: "var(--forest-2)", color: "#fff", position: "relative", overflow: "hidden" }}>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.06,
-            backgroundImage: "radial-gradient(rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "18px 18px",
-          }}
-        />
+        <AmbientBackdrop particles={8} />
         <div className="container" style={{ padding: "88px 32px", position: "relative" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 72, alignItems: "center" }}>
-            <div>
+            <div className="anim-fade-in-up">
               <div className="eyebrow" style={{ color: "var(--moss)" }}>· the AI tutor</div>
               <h2
                 className="display"

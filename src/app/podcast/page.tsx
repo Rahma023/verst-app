@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AmbientBackdrop } from "@/components/ambient-backdrop";
 import { Avatar } from "@/components/avatar";
 import { ClimateViz } from "@/components/climate-viz";
 import { Footer } from "@/components/footer";
@@ -63,6 +64,7 @@ export default async function PodcastPage(props: {
           >
             <ClimateViz variant="wave" style={{ height: "100%", width: "100%", borderRadius: 0 }} />
           </div>
+          <AmbientBackdrop particles={6} vignette={false} />
           <div
             className="container"
             style={{
